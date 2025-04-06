@@ -19,13 +19,12 @@ const FoodCard = memo(({ item }) => {
 
   return (
     <div
-      className="relative max-w-80 rounded-2xl overflow-hidden bg-white shadow-md pb-3 h-full flex flex-col transform transition-shadow duration-300 hover:shadow-lg"
+      className="relative rounded-2xl overflow-hidden bg-white shadow-md h-80 flex flex-col transform transition-shadow duration-300 hover:shadow-lg"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Image container */}
-      <div className="relative h-32 w-full overflow-hidden">
-        {/* actual <img> */}
+      {/* Fixed size image container */}
+      <div className="w-full h-32 flex-none overflow-hidden">
         <img
           src={item.imageUrl}
           alt={item.name}
@@ -40,7 +39,7 @@ const FoodCard = memo(({ item }) => {
 
         {/* dark overlay + price/heart */}
         {imageLoaded && (
-          <div className="absolute inset-0 bg-black/25 px-3 pt-3 flex justify-between items-start">
+          <div className="absolute top-0 left-0 right-0 h-32 bg-black/25 px-3 pt-3 flex justify-between items-start">
             <p className="rounded-full bg-orange-500 px-4 py-1 text-sm font-semibold text-white">
               Price {formatPrice(item.price)}
             </p>
@@ -56,13 +55,14 @@ const FoodCard = memo(({ item }) => {
 
         {/* shimmer while loading */}
         {!imageLoaded && (
-          <div className="absolute inset-0 bg-gray-100 animate-pulse" />
+          <div className="absolute top-0 left-0 right-0 h-32 bg-gray-100 animate-pulse" />
         )}
       </div>
 
-      {/* Text/content */}
-      <div className="flex-grow px-3 space-y-5 flex flex-col">
-        <div className="pt-3 flex flex-wrap gap-2">
+      {/* Content area with explicit heights */}
+      <div className="p-3 flex flex-col h-48">
+        {/* Tags */}
+        <div className="flex flex-wrap gap-2 mb-2">
           <span className="text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded">
             {item.category || "Uncategorized"}
           </span>
@@ -72,20 +72,28 @@ const FoodCard = memo(({ item }) => {
             </span>
           )}
         </div>
-        <div className="flex-grow">
-          <div className="flex justify-between items-center mb-2">
-            <p className="text-xl font-semibold">{item.name || "Unnamed Item"}</p>
-            <span className="text-sm text-gray-500">⭐ {item.popularity || 0}%</span>
-          </div>
-          <p className="text-sm mb-3">{truncateDescription(item.description)}</p>
+        
+        {/* Title and rating */}
+        <div className="flex justify-between items-center mb-2">
+          <p className="text-xl font-semibold">{item.name || "Unnamed Item"}</p>
+          <span className="text-sm text-gray-500">⭐ {item.popularity || 0}%</span>
         </div>
-        <button className="mt-auto w-full py-2 rounded-xl bg-orange-500 text-white hover:bg-black transition-colors duration-300">
-          Order Now
-        </button>
+        
+        {/* Description - explicit height with overflow */}
+        <div className="flex-1 overflow-hidden mb-2">
+          <p className="text-sm">{truncateDescription(item.description)}</p>
+        </div>
+        
+        {/* Button - absolutely positioned at bottom */}
+        <div className="mt-auto">
+          <button className="w-full py-2 rounded-xl bg-orange-500 text-white hover:bg-black transition-colors duration-300">
+            Order Now
+          </button>
+        </div>
       </div>
     </div>
   );
 });
 
-FoodCard.displayName = "FoodCard";
+
 export default FoodCard;

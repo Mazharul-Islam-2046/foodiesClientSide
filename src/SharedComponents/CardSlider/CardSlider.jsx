@@ -1,9 +1,5 @@
 import { useRef, useEffect, useMemo, memo } from "react";
-import {
-  A11y,
-  FreeMode,
-  Navigation,
-} from "swiper/modules";
+import { A11y, FreeMode, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import CategoryCard from "../Card/CategoryCard";
 import FoodCard from "../Card/FoodCard";
@@ -23,7 +19,7 @@ const CardSlider = memo(({ options }) => {
 
   const swiperRef = useRef(null);
   
-  // Flatten paginated data synchronously - important to do this correctly
+  // Flatten paginated data synchronously
   const processedItems = useMemo(() => {
     if (!menuItems || menuItems.length === 0) return [];
     
@@ -35,7 +31,7 @@ const CardSlider = memo(({ options }) => {
     }
   }, [menuItems, cardType]);
 
-  // Handle reaching the end - using a simpler approach
+  // Handle reaching the end
   const handleReachEnd = () => {
     if (hasNextPage && !isFetchingNextPage) {
       fetchNextPage().catch(err => console.error("Failed to fetch next page:", err));
@@ -61,20 +57,15 @@ const CardSlider = memo(({ options }) => {
     <div className="slider-container relative">
       <Swiper
         ref={swiperRef}
-        modules={[
-          A11y,
-          FreeMode,
-          Navigation,
-        ]}
+        modules={[A11y, FreeMode, Navigation]}
         spaceBetween={16}
         slidesPerView="auto"
         breakpoints={{
-          320: { slidesPerView: 1.4 },
-          768: { slidesPerView: 2.8 },
-          1024: { slidesPerView: 3.5 },
-          1440: { slidesPerView: 4.2 },
+          320: { slidesPerView: 1.4, spaceBetween: 6 },
+          768: { slidesPerView: 2.8, spaceBetween: 8 },
+          1024: { slidesPerView: 3.5, spaceBetween: 8 },
+          1440: { slidesPerView: 4.4, spaceBetween: 12 },
         }}
-        
         freeMode={{
           enabled: true,
           momentumBounce: false,
@@ -94,7 +85,8 @@ const CardSlider = memo(({ options }) => {
           return (
             <SwiperSlide
               key={key}
-              className="pr-8 py-2 cursor-grab active:cursor-grabbing"
+              className="py-2 pr-8"
+              style={{ height: 'auto' }}
             >
               <Card item={item} />
             </SwiperSlide>
@@ -111,5 +103,6 @@ const CardSlider = memo(({ options }) => {
   );
 });
 
-CardSlider.displayName = "CardSlider";
+
+
 export default CardSlider;
