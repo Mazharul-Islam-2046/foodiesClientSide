@@ -19,7 +19,7 @@ const FoodCard = memo(({ item }) => {
 
   return (
     <div
-      className="relative rounded-2xl overflow-hidden bg-white shadow-md h-80 flex flex-col transform transition-shadow duration-300 hover:shadow-lg"
+      className="relative rounded-2xl overflow-hidden bg-white shadow-md h-80 flex flex-col transform transition-shadow duration-300 hover:shadow-lg cursor-grab active:cursor-grabbing"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
