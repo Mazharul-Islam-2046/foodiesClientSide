@@ -98,7 +98,7 @@ const MostPopularFood = () => {
       {/* Show error message if query fails to load more data */}
       {isError && foodItems && (
         <div className="text-sm text-red-500 mt-4">
-          Failed to load more items. Please try again later.
+          Failed to load rest of the items. Please try again later.
         </div>
       )}
 
@@ -106,10 +106,9 @@ const MostPopularFood = () => {
 
       {/* Show message when no more items are available */}
       {!isLoading && !isError && !hasData && (
-        <div className="text-center py-12 text-gray-500">
-          No more items available. Please try later
-        </div>
+          console.log("No more items available. Thanks you")
       )}
+
     </div>
   );
 };
