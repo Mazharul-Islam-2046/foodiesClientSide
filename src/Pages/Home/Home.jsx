@@ -1,5 +1,6 @@
 import Hero from "./Sections/Hero/Hero";
 import MostPopularFood from "./Sections/MostPopularFood/MostPopularFood";
+import QuickBites from "./Sections/QuickBites/QuickBites";
 import SpiceUp from "./Sections/SpiceUp/SpiceUp";
 
 const Home = () => {
@@ -8,6 +9,7 @@ const Home = () => {
         <Hero/>
         <MostPopularFood/>
         <SpiceUp/>
+        <QuickBites/>
         </>
     );
 };

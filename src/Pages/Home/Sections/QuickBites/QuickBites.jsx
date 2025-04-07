@@ -1,5 +1,7 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { menuApi } from '../../../../api/menuApi';
+import FoodCardSkeleton from '../../../../SharedComponents/Card/FoodCardSkeleton';
+import CardSlider from '../../../../SharedComponents/CardSlider/CardSlider';
 
 const QuickBites = () => {
 
@@ -79,7 +81,7 @@ const QuickBites = () => {
           {hasData && (
             <CardSlider
               options={{
-                cardType: "food",
+                cardType: "category",
                 menuItems: foodItems.pages,
                 hasNextPage,
                 isFetchingNextPage,

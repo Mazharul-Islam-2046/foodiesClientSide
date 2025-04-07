@@ -1,7 +1,7 @@
 import { useRef, useEffect, useMemo, memo } from "react";
 import { A11y, FreeMode, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import CategoryCard from "../Card/CategoryCard";
+import SquareCard from "../Card/SquareCard";
 import FoodCard from "../Card/FoodCard";
 
 // only core + module CSS
@@ -80,7 +80,7 @@ const CardSlider = memo(({ options }) => {
       >
         {processedItems.map((item, idx) => {
           const key = `${item?.id ?? idx}-${cardType}`;
-          const Card = cardType === "food" ? FoodCard : CategoryCard;
+          const Card = cardType === "food" ? FoodCard : SquareCard;
           
           return (
             <SwiperSlide
@@ -95,7 +95,7 @@ const CardSlider = memo(({ options }) => {
 
         {isFetchingNextPage && (
           <SwiperSlide className="flex items-center justify-center">
-            <div className="loader w-8 h-8 border-4 border-t-4 border-gray-200 border-t-orange-500 rounded-full animate-spin" />
+            <div className="loader w-8 h-8 border-4 border-t-4 border-gray-200 border-t-orange-500 rounded-full animate-spin mx-auto my-auto" />
           </SwiperSlide>
         )}
       </Swiper>
