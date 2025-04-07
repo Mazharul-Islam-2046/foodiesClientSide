@@ -18,7 +18,7 @@ const SquareCard = memo(({ item }) => {
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
             >
-                <img className={`w-full h-full object-cover ${isHovered ? "scale-105" : "scale-100"}`} src={item?.imageUrl} alt={item?.name} />
+                <img className={`w-full h-full object-cover transition duration-300 ease-in-out ${isHovered ? "scale-105" : "scale-100"}`} src={item?.imageUrl} alt={item?.name} />
                 <div className="absolute flex justify-center items-center h-full w-full bg-black bg-opacity-30 text-white">
                     <p className="text-xl font-medium pb-2">
                         {item.name}
