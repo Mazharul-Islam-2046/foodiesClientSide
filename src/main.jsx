@@ -5,6 +5,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import App from "./App";
 import Home from "./Pages/Home/Home";
+import Menu from "./Pages/Menu/Menu";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
       {
         path: "/dashboard",
         element: <div>Dashboard</div>,
+      },
+      {
+        path: "/menu",
+        element: <Menu/>,
       }
     ]
   },
