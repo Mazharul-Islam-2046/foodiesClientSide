@@ -7,9 +7,9 @@ const Menu = () => {
     return (
         <>
             <Banner />
-            <div className="flex">
-                <SideFilterBar className="basis-2/5" />
-                <ItemSearchResult className="basis-3/5 " />
+            <div className="flex relative max-w-[1520px] w-11/12 mx-auto px-4 sm:px-6 lg:px-8 h-full">
+                <SideFilterBar />
+                <ItemSearchResult />
             </div>
 
         </>
