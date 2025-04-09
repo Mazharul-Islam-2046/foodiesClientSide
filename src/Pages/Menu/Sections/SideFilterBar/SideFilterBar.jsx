@@ -175,7 +175,7 @@ const SideFilterBar = ({ onFilterChange }) => {
   };
 
   return (
-    <div className="sticky top-0 h-screen overflow-y-auto bg-white rounded-lg shadow-md p-4 pb-20 basis-1/3">
+    <div className="sticky top-0 h-screen overflow-y-auto bg-white rounded-lg p-4 pb-20 basis-1/3 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1),0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-lg font-semibold text-gray-800">Filters</h2>
         <button 

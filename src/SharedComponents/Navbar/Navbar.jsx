@@ -1,19 +1,68 @@
-import { useState } from "react";
-import { ShoppingCart, User, MapPin, ChevronDown } from "lucide-react";
+import { useState, useEffect } from "react";
+import { User, MapPin, ChevronDown, Loader } from "lucide-react";
 import Cart from "../Components/Cart";
 
 export default function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [location, setLocation] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   // For demo purposes - toggle this to see different states
   const user = isLoggedIn
     ? { name: "John Doe", avatar: "/api/placeholder/40/40" }
     : null;
-  const location = "San Francisco, CA";
+
+  useEffect(() => {
+    // Function to get user's location
+    const getUserLocation = () => {
+      setIsLoading(true);
+      
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            try {
+              // Using reverse geocoding to get a readable address
+              const { latitude, longitude } = position.coords;
+              const response = await fetch(
+                `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1`
+              );
+              
+              if (response.ok) {
+                const data = await response.json();
+                const city = data.address.city || data.address.town || data.address.village || data.address.suburb;
+                const state = data.address.state || "";
+                const formattedLocation = state ? `${city}, ${state}` : city;
+                setLocation(formattedLocation || "Location not found");
+              } else {
+                setLocation("San Francisco, CA"); // Fallback
+              }
+            } catch (error) {
+              console.error("Error fetching location:", error);
+              setLocation("San Francisco, CA"); // Fallback
+            } finally {
+              setIsLoading(false);
+            }
+          },
+          (error) => {
+            console.error("Geolocation error:", error);
+            setLocation("San Francisco, CA"); // Fallback
+            setIsLoading(false);
+          },
+          { timeout: 10000 }
+        );
+      } else {
+        // Geolocation not supported
+        setLocation("San Francisco, CA"); // Fallback
+        setIsLoading(false);
+      }
+    };
+
+    getUserLocation();
+  }, []);
 
   return (
     <header className="bg-white shadow-md py-4 px-6">
-      <div className="flex items-center justify-between relative max-w-[1520px] w-11/12 mx-auto px-4 sm:px-6 lg:px-8 h-full ">
+      <div className="flex items-center justify-between relative max-w-[1520px] w-11/12 mx-auto px-4 sm:px-6 lg:px-8 h-full">
         {/* Logo on the left */}
         <div className="flex-1">
           <h1 className="text-2xl font-bold text-orange-500 logoFont">
@@ -25,8 +74,17 @@ export default function Navbar() {
         <div className="flex-1 flex justify-center">
           <button className="flex items-center text-gray-700 hover:text-orange-500 transition">
             <MapPin size={18} className="mr-1" />
-            <span className="mr-1">{location}</span>
-            <ChevronDown size={16} />
+            {isLoading ? (
+              <div className="flex items-center">
+                <Loader size={16} className="animate-spin mr-2" />
+                <span>Getting location...</span>
+              </div>
+            ) : (
+              <>
+                <span className="mr-1">{location}</span>
+                <ChevronDown size={16} />
+              </>
+            )}
           </button>
         </div>
 
