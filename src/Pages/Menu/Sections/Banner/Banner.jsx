@@ -2,7 +2,7 @@ import React from 'react';
 
 const Banner = () => {
     return (
-        <div className='relative h-[40vh] w-11/12 max-w-[1520px] mx-auto px-4 sm:px-6 lg:px-8 mb-6 mt-4'>
+        <div className='relative h-[45vh] w-11/12 max-w-[1520px] mx-auto px-4 sm:px-6 lg:px-8 mb-6 mt-4'>
             {/* Banner Image with Overlay */}
             <div className='relative w-full h-full rounded-md overflow-hidden shadow-lg'>
                 <img 
