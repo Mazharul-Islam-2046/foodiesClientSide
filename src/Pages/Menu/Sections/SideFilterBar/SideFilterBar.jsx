@@ -1,5 +1,13 @@
 // SideFilterBar.jsx
 import { useState, useEffect } from 'react';
+import SortByFilter from './Components/SortByFilter/SortByFilter';
+import StarRattings from './Components/StarRattings/STarRattings';
+import PricingRangeFilter from './Components/PricingRangeFilter/PricingRangeFilter';
+import CategoryFilter from './Components/CategoryFilter/CategoryFilter';
+import DietaryPreferencesFilter from './Components/DietaryPreferencesFilter/DietaryPreferencesFilter';
+import SpiceLevelFilter from './Components/SpiceLavelFilter/SpiceLevelFilter';
+import PrepTimeFilter from './Components/PrepTimeFilter/PrepTimeFilter';
+import HealthyOptionFilter from './Components/HealthyOptionFilter/HealthyOptionFilter';
 
 const SideFilterBar = ({ onFilterChange }) => {
   const [categories, setCategories] = useState([]);
@@ -46,6 +54,8 @@ const SideFilterBar = ({ onFilterChange }) => {
   }, []);
 
   // Handle category selection
+
+  
   const handleCategoryChange = (e) => {
     setSelectedCategory(e.target.value);
   };
@@ -102,6 +112,7 @@ const SideFilterBar = ({ onFilterChange }) => {
       isHealthy: isHealthy || undefined,
       rating: rating > 0 ? rating : undefined,
       dietaryPreferences: Object.entries(dietaryPreferences)
+      // eslint-disable-next-line no-unused-vars
         .filter(([_, value]) => value)
         .map(([key]) => key),
       spiceLevel: spiceLevel || undefined,
@@ -139,41 +150,6 @@ const SideFilterBar = ({ onFilterChange }) => {
     onFilterChange({});
   };
 
-  // Star rating component
-  const StarRating = ({ rating, onRatingChange }) => {
-    return (
-      <div className="flex items-center">
-        {[1, 2, 3, 4, 5].map((star) => (
-          <button
-            key={star}
-            type="button"
-            onClick={() => onRatingChange(star)}
-            className="focus:outline-none"
-          >
-            <svg
-              className={`w-6 h-6 ${
-                star <= rating ? 'text-yellow-400' : 'text-gray-300'
-              }`}
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-            </svg>
-          </button>
-        ))}
-        {rating > 0 && (
-          <button
-            onClick={() => onRatingChange(0)}
-            className="ml-2 text-xs text-gray-500 hover:text-gray-700"
-          >
-            Clear
-          </button>
-        )}
-      </div>
-    );
-  };
-
   return (
     <div className="sticky top-0 h-screen overflow-y-auto bg-white rounded-lg p-4 pb-20 basis-1/3 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1),0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
       <div className="flex justify-between items-center mb-6">
@@ -186,191 +162,74 @@ const SideFilterBar = ({ onFilterChange }) => {
         </button>
       </div>
 
-      {/* Sort By - New filter */}
-      <div className="mb-6">
-        <h3 className="text-md font-medium text-gray-700 mb-2">Sort By</h3>
-        <select
-          value={sortBy}
-          onChange={handleSortChange}
-          className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
-        >
-          <option value="recommended">Recommended</option>
-          <option value="price_low">Price: Low to High</option>
-          <option value="price_high">Price: High to Low</option>
-          <option value="rating">Highest Rated</option>
-          <option value="popular">Most Popular</option>
-          <option value="newest">Newest Items</option>
-        </select>
-      </div>
+      {/* Sort By filter */}
+      <SortByFilter 
+      sortBy={sortBy} 
+      handleSortChange={handleSortChange}
+      />
+
+
 
       {/* Category Filter */}
-      <div className="mb-6">
-        <h3 className="text-md font-medium text-gray-700 mb-2">Category</h3>
-        <select
-          value={selectedCategory}
-          onChange={handleCategoryChange}
-          className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
-        >
-          <option value="">All Categories</option>
-          {categories.map((category, index) => (
-            <option key={index} value={category}>
-              {category}
-            </option>
-          ))}
-        </select>
-      </div>
+      <CategoryFilter 
+      selectedCategory={selectedCategory} 
+      onCategoryChange={handleCategoryChange} 
+      categories={categories} 
+      loading={loading}
+      />
+
+
 
       {/* Price Range Filter */}
-      <div className="mb-6">
-        <h3 className="text-md font-medium text-gray-700 mb-2">Price Range</h3>
-        <div className="grid grid-cols-2 gap-2">
-          <div>
-            <label htmlFor="minPrice" className="block text-xs text-gray-500 mb-1">Min Price</label>
-            <div className="relative">
-              <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
-              <input
-                type="number"
-                id="minPrice"
-                name="minPrice"
-                min="0"
-                value={priceRange.minPrice}
-                onChange={handlePriceChange}
-                className="w-full p-2 pl-6 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
-                placeholder="0"
-              />
-            </div>
-          </div>
-          <div>
-            <label htmlFor="maxPrice" className="block text-xs text-gray-500 mb-1">Max Price</label>
-            <div className="relative">
-              <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
-              <input
-                type="number"
-                id="maxPrice"
-                name="maxPrice"
-                min="0"
-                value={priceRange.maxPrice}
-                onChange={handlePriceChange}
-                className="w-full p-2 pl-6 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
-                placeholder="100"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
+      <PricingRangeFilter 
+      priceRange={priceRange} 
+      onPriceChange={handlePriceChange}
+      />
 
-      {/* Star Rating Filter - New filter */}
+
+
+      {/* Star Rating Filter */}
       <div className="mb-6">
         <h3 className="text-md font-medium text-gray-700 mb-2">Minimum Rating</h3>
-        <StarRating rating={rating} onRatingChange={handleRatingChange} />
+        <StarRattings 
+        rating={rating} 
+        onRatingChange={handleRatingChange} 
+        />
       </div>
 
-      {/* Dietary Preferences - New filter */}
-      <div className="mb-6">
-        <h3 className="text-md font-medium text-gray-700 mb-2">Dietary Preferences</h3>
-        <div className="space-y-2">
-          <div className="flex items-center">
-            <input
-              type="checkbox"
-              id="vegetarian"
-              name="vegetarian"
-              checked={dietaryPreferences.vegetarian}
-              onChange={handleDietaryChange}
-              className="w-4 h-4 text-orange-500 border-gray-300 rounded focus:ring-orange-500"
-            />
-            <label htmlFor="vegetarian" className="ml-2 text-gray-700">
-              Vegetarian
-            </label>
-          </div>
-          <div className="flex items-center">
-            <input
-              type="checkbox"
-              id="vegan"
-              name="vegan"
-              checked={dietaryPreferences.vegan}
-              onChange={handleDietaryChange}
-              className="w-4 h-4 text-orange-500 border-gray-300 rounded focus:ring-orange-500"
-            />
-            <label htmlFor="vegan" className="ml-2 text-gray-700">
-              Vegan
-            </label>
-          </div>
-          <div className="flex items-center">
-            <input
-              type="checkbox"
-              id="glutenFree"
-              name="glutenFree"
-              checked={dietaryPreferences.glutenFree}
-              onChange={handleDietaryChange}
-              className="w-4 h-4 text-orange-500 border-gray-300 rounded focus:ring-orange-500"
-            />
-            <label htmlFor="glutenFree" className="ml-2 text-gray-700">
-              Gluten Free
-            </label>
-          </div>
-          <div className="flex items-center">
-            <input
-              type="checkbox"
-              id="dairyFree"
-              name="dairyFree"
-              checked={dietaryPreferences.dairyFree}
-              onChange={handleDietaryChange}
-              className="w-4 h-4 text-orange-500 border-gray-300 rounded focus:ring-orange-500"
-            />
-            <label htmlFor="dairyFree" className="ml-2 text-gray-700">
-              Dairy Free
-            </label>
-          </div>
-        </div>
-      </div>
 
-      {/* Spice Level - New filter */}
-      <div className="mb-6">
-        <h3 className="text-md font-medium text-gray-700 mb-2">Spice Level</h3>
-        <select
-          value={spiceLevel}
-          onChange={handleSpiceLevelChange}
-          className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
-        >
-          <option value="">Any Spice Level</option>
-          <option value="not_spicy">Not Spicy</option>
-          <option value="mild">Mild</option>
-          <option value="medium">Medium</option>
-          <option value="spicy">Spicy</option>
-          <option value="very_spicy">Very Spicy</option>
-        </select>
-      </div>
 
-      {/* Preparation Time - New filter */}
-      <div className="mb-6">
-        <h3 className="text-md font-medium text-gray-700 mb-2">Preparation Time</h3>
-        <select
-          value={preparationTime}
-          onChange={handlePrepTimeChange}
-          className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
-        >
-          <option value="">Any Time</option>
-          <option value="quick">Quick (under 10 min)</option>
-          <option value="medium">Medium (10-20 min)</option>
-          <option value="long">Long (over 20 min)</option>
-        </select>
-      </div>
+      {/* Dietary Preferences Filter */}
+      <DietaryPreferencesFilter 
+      dietaryPreferences={dietaryPreferences} 
+      onDietaryChange={handleDietaryChange}
+      />
+
+
+
+      {/* Spice Level filter */}
+      <SpiceLevelFilter 
+      spiceLevel={spiceLevel} 
+      onSpiceLevelChange={handleSpiceLevelChange}
+      />
+
+
+
+      {/* Preparation Time filter */}
+      <PrepTimeFilter 
+      preparationTime={preparationTime} 
+      onPrepTimeChange={handlePrepTimeChange}
+      />
+
+
 
       {/* Healthy Option Filter */}
-      <div className="mb-6">
-        <div className="flex items-center">
-          <input
-            type="checkbox"
-            id="healthy"
-            checked={isHealthy}
-            onChange={handleHealthyChange}
-            className="w-4 h-4 text-orange-500 border-gray-300 rounded focus:ring-orange-500"
-          />
-          <label htmlFor="healthy" className="ml-2 text-gray-700">
-            Healthy Options Only
-          </label>
-        </div>
-      </div>
+      <HealthyOptionFilter 
+      isHealthy={isHealthy} 
+      onHealthyChange={handleHealthyChange}
+      />
+
+
 
       {/* Apply Filters Button */}
       <button

@@ -2,8 +2,6 @@ import { memo, useState } from "react";
 
 const SquareCard = memo(({ item }) => {
 
-    console.log(item);
-
     const [isHovered, setIsHovered] = useState(false);
 
 
