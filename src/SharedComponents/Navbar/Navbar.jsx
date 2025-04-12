@@ -45,14 +45,14 @@ export default function Navbar() {
           },
           (error) => {
             console.error("Geolocation error:", error);
-            setLocation("San Francisco, CA"); // Fallback
+            setLocation("Location not found"); // Fallback
             setIsLoading(false);
           },
           { timeout: 10000 }
         );
       } else {
         // Geolocation not supported
-        setLocation("San Francisco, CA"); // Fallback
+        setLocation("Allow location access"); // Fallback
         setIsLoading(false);
       }
     };
