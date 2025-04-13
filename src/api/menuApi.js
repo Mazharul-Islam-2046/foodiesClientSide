@@ -23,7 +23,7 @@ export const menuApi = {
   },
 
   getPopularMenuItems: (page = 1, limit = 10) => {
-    return api.get(`/menuItems/getFilterMenuItems?page=${page}&limit=${limit}`, {
+    return api.get(`/menuItems/getFilterMenuItems?page=${page}&limit=${limit}sortBy=${"popularity"}`, {
       params: {
         isPpopular: true
       }

@@ -20,7 +20,6 @@ const MostPopularFood = () => {
     queryFn: async ({ pageParam = 1 }) => {
       try {
         const response = await menuApi.getPopularMenuItems(pageParam, 7);
-        console.log(response);
         // Return the exact format your API provides
         return response.data.data.menuItems;
       } catch (error) {
