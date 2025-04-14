@@ -53,7 +53,7 @@ const Menu = () => {
             <Banner />
             <div className="flex relative max-w-[1520px] w-11/12 mx-auto px-4 sm:px-6 lg:px-8 h-full">
                 <SideFilterBar onFilterChange={onFilterChange} />
-                <ItemSearchResult filteredMenuItems={filteredMenuItems.pages} isLoading={isLoading} isError={isError} error={error} fetchNextPage={fetchNextPage} hasNextPage={hasNextPage} isFetchNextPage={isFetchNextPage} setSearch={setSearch} />
+                <ItemSearchResult filteredMenuItems={filteredMenuItems?.pages} isLoading={isLoading} isError={isError} error={error} fetchNextPage={fetchNextPage} hasNextPage={hasNextPage} isFetchNextPage={isFetchNextPage} setSearch={setSearch} />
             </div>
 
         </>
