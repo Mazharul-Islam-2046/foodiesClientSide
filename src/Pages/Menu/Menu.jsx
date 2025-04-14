@@ -3,11 +3,17 @@ import Banner from "./Sections/Banner/Banner";
 import ItemSearchResult from "./Sections/ItemsSearchResult/ItemSearchResult";
 import SideFilterBar from "./Sections/SideFilterBar/SideFilterBar";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { menuApi } from "../../api/menuApi";
 
 const Menu = () => {
 
-    const [filters, setFilters] = useState({});
     const [search, setSearch] = useState('');
+    const [filters, setFilters] = useState({});
+
+
+    const onFilterChange = (newFilters) => {
+        setFilters(search ? { search, ...newFilters } : newFilters);
+    };
 
     const {
         data: filteredMenuItems,
@@ -20,9 +26,14 @@ const Menu = () => {
     } = useInfiniteQuery({
         queryKey: ['fillteredMenuItems', filters, search],
         queryFn: async ({ pageParam = 1 }) => {
-            const response = await fetch(`/api/menu-items?page=${pageParam}&limit=12&filters=${JSON.stringify(filters)}&search=${search}`);
-            const data = await response.json();
-            return data;
+            try {
+                    const response = await menuApi.filterMenuItems(pageParam, 7, filters);
+                    // Return the exact format your API provides
+                    return response.data.data.menuItems;
+                  } catch (error) {
+                    console.error("Error fetching menu items:", error);
+                    throw error;
+                  }
         },
         getNextPageParam: (lastPage, allPages) => {
             // More robust nextPage detection
@@ -30,8 +41,10 @@ const Menu = () => {
             if (lastPage.nextPage) return lastPage.nextPage;
             if (lastPage.length === 0) return undefined;
             return allPages.length + 1;
-          },
+        },
     })
+
+
 
 
 
@@ -39,7 +52,7 @@ const Menu = () => {
         <>
             <Banner />
             <div className="flex relative max-w-[1520px] w-11/12 mx-auto px-4 sm:px-6 lg:px-8 h-full">
-                <SideFilterBar setFilters={setFilters} />
+                <SideFilterBar onFilterChange={onFilterChange} />
                 <ItemSearchResult filteredMenuItems={filteredMenuItems} isLoading={isLoading} isError={isError} error={error} fetchNextPage={fetchNextPage} hasNextPage={hasNextPage} isFetchNextPage={isFetchNextPage} setSearch={setSearch} />
             </div>
 

@@ -16,9 +16,9 @@ export default function Navbar() {
     // Function to get user's location
     const getUserLocation = () => {
       setIsLoading(true);
-      
+
       if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
+        navigator.geolocation.watchPosition(
           async (position) => {
             try {
               // Using reverse geocoding to get a readable address
@@ -26,7 +26,7 @@ export default function Navbar() {
               const response = await fetch(
                 `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1`
               );
-              
+
               if (response.ok) {
                 const data = await response.json();
                 const city = data.address.city || data.address.town || data.address.village || data.address.suburb;
@@ -45,10 +45,16 @@ export default function Navbar() {
           },
           (error) => {
             console.error("Geolocation error:", error);
-            setLocation("Location not found"); // Fallback
+            alert("please allow location access to get your current location");
+            if (error.code === 1) {
+              // User denied access to location
+              setLocation("Please allow location access to get your current location");
+            } else {
+              setLocation("Location not found");
+            }
             setIsLoading(false);
           },
-          { timeout: 10000 }
+          { timeout: 50000 }
         );
       } else {
         // Geolocation not supported

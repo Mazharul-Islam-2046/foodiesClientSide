@@ -29,4 +29,8 @@ export const menuApi = {
       }
     });
   },
+
+  getCategories: () => {
+    return api.get("/menuItems/fetchCategories");
+  }
 };

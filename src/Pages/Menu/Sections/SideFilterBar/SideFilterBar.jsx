@@ -8,6 +8,7 @@ import DietaryPreferencesFilter from './Components/DietaryPreferencesFilter/Diet
 import SpiceLevelFilter from './Components/SpiceLavelFilter/SpiceLevelFilter';
 import PrepTimeFilter from './Components/PrepTimeFilter/PrepTimeFilter';
 import HealthyOptionFilter from './Components/HealthyOptionFilter/HealthyOptionFilter';
+import { menuApi } from '../../../../api/menuApi';
 
 const SideFilterBar = ({ onFilterChange }) => {
   const [categories, setCategories] = useState([]);
@@ -35,9 +36,11 @@ const SideFilterBar = ({ onFilterChange }) => {
         setLoading(true);
         // In a real application, you would fetch categories from your API
         // This is a placeholder that should be replaced with your actual API call
-        const response = await fetch('/api/menu-categories');
-        const data = await response.json();
+        const {
+          data,
+        } = await menuApi.getCategories();
         setCategories(data);
+
       } catch (error) {
         console.error('Error fetching categories:', error);
         // Fallback with some common food categories
@@ -165,7 +168,7 @@ const SideFilterBar = ({ onFilterChange }) => {
       {/* Sort By filter */}
       <SortByFilter 
       sortBy={sortBy} 
-      handleSortChange={handleSortChange}
+      onSortChange={handleSortChange}
       />
 
 

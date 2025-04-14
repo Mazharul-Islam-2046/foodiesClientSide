@@ -1,9 +1,11 @@
 import React from 'react';
 
-const ItemSearchResult = () => {
+const ItemSearchResult = ({filteredMenuItems, isLoading, isError, error, hasNextPage, isFetchNextPage, setSearch}) => {
+
+    console.log(filteredMenuItems, isLoading, isError, error, hasNextPage, isFetchNextPage, setSearch);
     return (
         <div className='basis-2/3'>
-            <p>Menus</p>
+            
         </div>
     );
 };
