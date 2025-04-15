@@ -7,6 +7,7 @@ import { menuApi } from "../../api/menuApi";
 import SearchBar from "./Sections/SearchBar/SearchBar";
 import Error from "../../SharedComponents/Error/Error";
 import FoodCardSkeleton from "../../SharedComponents/Card/FoodCardSkeleton";
+import {useInView} from "react-intersection-observer";
 
 const Menu = () => {
 
@@ -72,21 +73,9 @@ const Menu = () => {
     const hasData = filteredMenuItems?.pages && filteredMenuItems?.pages[0].length > 0;
 
 
-    useEffect(() => {
-        const observer = new IntersectionObserver((entries) => {
-            if (entries[0].isIntersecting) {
-                fetchNextPage();
-            }
-        });
-        if (loadMoreRef.current) {
-            observer.observe(loadMoreRef.current);
-        }
-        return () => {
-            if (loadMoreRef.current) {
-                observer.unobserve(loadMoreRef.current);
-            }
-        };
-    }, [loadMoreRef, fetchNextPage]);
+    const {ref, inView} = useInView({
+        threshold: 1
+    })
 
 
 
@@ -110,10 +99,11 @@ const Menu = () => {
                         hasData={hasData}
                         renderLoadingSkeleton={renderLoadingSkeleton}
                         renderError={renderError}
+                        inView={inView}
                     />
                     {hasNextPage && (
                         <div
-                            ref={loadMoreRef}
+                            ref={ref}
                             className="h-10 w-full flex items-center justify-center"
                         >
                             {isFetchingNextPage && <p>Loading more items...</p>}

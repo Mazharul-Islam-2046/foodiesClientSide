@@ -10,7 +10,9 @@ const ItemSearchResult = ({
     isFetchingNextPage, 
     hasData, 
     renderLoadingSkeleton, 
-    renderError 
+    renderError,
+    fetchNextPage,
+    inView
 }) => {
     const [items, setItems] = useState([]);
     
@@ -20,7 +22,14 @@ const ItemSearchResult = ({
             const allItems = filteredMenuItems.flatMap(page => page || []);
             setItems(allItems);
         }
-    }, [filteredMenuItems]);
+        if (filteredMenuItems && filteredMenuItems.length === 0) {
+            setItems([]);
+        }
+        if (inView) {
+            console.log("inView");
+            fetchNextPage();
+        }
+    }, [filteredMenuItems, inView, fetchNextPage]);
 
     return (
         <>
