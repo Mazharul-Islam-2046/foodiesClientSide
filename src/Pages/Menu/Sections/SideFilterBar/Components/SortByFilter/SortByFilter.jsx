@@ -11,10 +11,10 @@ const SortByFilter = ({sortBy, onSortChange}) => {
                     className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
                 >
                     <option value="recommended">Recommended</option>
-                    <option value="price_low">Price: Low to High</option>
-                    <option value="price_high">Price: High to Low</option>
-                    <option value="rating">Highest Rated</option>
-                    <option value="popular">Most Popular</option>
+                    <option value="priceLowToHigh">Price: Low to High</option>
+                    <option value="priceHighToLow">Price: High to Low</option>
+                    <option value="highestRated">Highest Rated</option>
+                    <option value="popularity">Most Popular</option>
                     <option value="newest">Newest Items</option>
                 </select>
             </div>

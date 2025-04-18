@@ -17,6 +17,7 @@ const Menu = () => {
 
     const onFilterChange = (newFilters) => {
         setFilters(search ? { search, ...newFilters } : newFilters);
+        console.log("Filters Debug: ", filters);
     };
 
     const {
