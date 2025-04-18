@@ -13,14 +13,14 @@ const Menu = () => {
 
     const [search, setSearch] = useState('');
     const [filters, setFilters] = useState({});
-    const loadMoreRef = useRef(null);
+    const [filteredMenuItems, setFilteredMenuItems] = useState([]);
 
     const onFilterChange = (newFilters) => {
         setFilters(search ? { search, ...newFilters } : newFilters);
     };
 
     const {
-        data: filteredMenuItems,
+        data,
         isLoading,
         isError,
         error,
@@ -32,19 +32,21 @@ const Menu = () => {
         queryFn: async ({ pageParam = 1 }) => {
             try {
                 const response = await menuApi.filterMenuItems(pageParam, 20, filters);
+                setFilteredMenuItems(response.data.data.menuItems);
                 // Return the exact format your API provides
-                return response.data.data.menuItems;
+                return response.data.data;
             } catch (error) {
                 console.error("Error fetching menu items:", error);
                 throw error;
             }
         },
         getNextPageParam: (lastPage, allPages) => {
+            console.log(lastPage, allPages);
             // More robust nextPage detection
-            if (!lastPage) return undefined;
-            if (lastPage.nextPage) return lastPage.nextPage;
-            if (lastPage.length === 0) return undefined;
-            return allPages.length + 1;
+            if (!lastPage) return undefined
+            if (lastPage.menuItems.length === 0) return undefined;
+            if (lastPage.currentPage < lastPage.totalPages) return lastPage.currentPage + 1;
+            return undefined;
         },
         staleTime: 60 * 60 * 200,
         refetchOnWindowFocus: false,
@@ -74,7 +76,7 @@ const Menu = () => {
 
 
     const {ref, inView} = useInView({
-        threshold: 1
+        threshold: 0
     })
 
 
@@ -89,7 +91,7 @@ const Menu = () => {
                 <div className="flex flex-col flex-grow gap-6">
                     <SearchBar setSearch={setSearch} />
                     <ItemSearchResult
-                        filteredMenuItems={filteredMenuItems?.pages}
+                        data={data}
                         isLoading={isLoading}
                         isError={isError}
                         error={error}
