@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import Banner from "./Sections/Banner/Banner";
 import ItemSearchResult from "./Sections/ItemsSearchResult/ItemSearchResult";
 import SideFilterBar from "./Sections/SideFilterBar/SideFilterBar";
@@ -7,7 +7,7 @@ import { menuApi } from "../../api/menuApi";
 import SearchBar from "./Sections/SearchBar/SearchBar";
 import Error from "../../SharedComponents/Error/Error";
 import FoodCardSkeleton from "../../SharedComponents/Card/FoodCardSkeleton";
-import {useInView} from "react-intersection-observer";
+import { useInView } from "react-intersection-observer";
 
 const Menu = () => {
 
@@ -75,7 +75,7 @@ const Menu = () => {
     const hasData = filteredMenuItems?.pages && filteredMenuItems?.pages[0].length > 0;
 
 
-    const {ref, inView} = useInView({
+    const { ref, inView } = useInView({
         threshold: 0
     })
 
@@ -90,6 +90,9 @@ const Menu = () => {
                 <SideFilterBar onFilterChange={onFilterChange} />
                 <div className="flex flex-col flex-grow gap-6">
                     <SearchBar setSearch={setSearch} />
+
+
+                    {/* Item search result */}
                     <ItemSearchResult
                         data={data}
                         isLoading={isLoading}
@@ -103,12 +106,28 @@ const Menu = () => {
                         renderError={renderError}
                         inView={inView}
                     />
+
+
+
+                    {/* Loading indicator */}
                     {hasNextPage && (
                         <div
                             ref={ref}
                             className="h-10 w-full flex items-center justify-center"
                         >
-                            {isFetchingNextPage && <p>Loading more items...</p>}
+                            {isFetchingNextPage && (<div className="flex items-center justify-center">
+                                <div className="loader w-8 h-8 border-4 border-t-4 border-gray-200 border-t-orange-500 rounded-full animate-spin mx-auto my-auto" />
+                            </div>)}
+                        </div>
+                    )}
+
+
+
+                    {/* No more items to show */}
+
+                    {!hasNextPage && (
+                        <div className="text-center mt-4">
+                            <p className="text-gray-600">No more items to show</p>
                         </div>
                     )}
                 </div>
