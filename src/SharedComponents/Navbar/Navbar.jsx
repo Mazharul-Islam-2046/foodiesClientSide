@@ -1,16 +1,19 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { User, MapPin, ChevronDown, Loader } from "lucide-react";
 import Cart from "../Components/Cart";
+import { AuthContext } from "../../providers/AuthProvider/AuthContext";
 
 export default function Navbar() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const {user} = useContext(AuthContext)
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [location, setLocation] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
   // For demo purposes - toggle this to see different states
-  const user = isLoggedIn
-    ? { name: "John Doe", avatar: "/api/placeholder/40/40" }
-    : null;
+  // const user = isLoggedIn
+  //   ? { name: "John Doe", avatar: "/api/placeholder/40/40" }
+  //   : null;
 
   useEffect(() => {
     // Function to get user's location

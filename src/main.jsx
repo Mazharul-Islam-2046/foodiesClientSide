@@ -6,6 +6,7 @@ import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import App from "./App";
 import Home from "./Pages/Home/Home";
 import Menu from "./Pages/Menu/Menu";
+import AuthProvider from "./providers/AuthProvider/AuthProvider";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -30,16 +31,18 @@ const router = createBrowserRouter([
       },
       {
         path: "/menu",
-        element: <Menu/>,
-      }
-    ]
+        element: <Menu />,
+      },
+    ],
   },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-          <RouterProvider router={router} />
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
     </QueryClientProvider>
   </React.StrictMode>
 );
