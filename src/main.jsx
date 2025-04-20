@@ -6,6 +6,7 @@ import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import App from "./App";
 import Home from "./Pages/Home/Home";
 import Menu from "./Pages/Menu/Menu";
+import Restaurant from "./Pages/Restaurant/Restaurant";
 import AuthProvider from "./providers/AuthProvider/AuthProvider";
 
 const queryClient = new QueryClient({
@@ -33,6 +34,14 @@ const router = createBrowserRouter([
         path: "/menu",
         element: <Menu />,
       },
+      {
+        // path: "/restaurant/:id",
+        path: "/restaurant",
+        element: <Restaurant/>,
+        // loader: async ({ params }) => {
+        //   return fetch(`https://foodies-server.vercel.app/restaurant/${params.id}`);
+        // },
+      }
     ],
   },
 ]);
