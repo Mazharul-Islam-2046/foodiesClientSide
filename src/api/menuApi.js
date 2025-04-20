@@ -15,7 +15,7 @@ export const menuApi = {
   },
 
   filterMenuItems: (page = 1, limit = 10, filters = {}) => {
-    return api.get(`/menuItems/getFilterMenuItems?page=${page}&limit=${limit}&sortBy=${filters.sortBy}`, {
+    return api.get(`/menuItems/getFilterMenuItems?page=${page}&limit=${limit}&sortBy=${filters.sortBy || "popularity"}`, {
       params: {
         ...filters
       }
@@ -29,4 +29,8 @@ export const menuApi = {
       }
     });
   },
+
+  getCategories: () => {
+    return api.get("/menuItems/fetchCategories");
+  }
 };

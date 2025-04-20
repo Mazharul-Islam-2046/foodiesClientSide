@@ -8,6 +8,7 @@ import DietaryPreferencesFilter from './Components/DietaryPreferencesFilter/Diet
 import SpiceLevelFilter from './Components/SpiceLavelFilter/SpiceLevelFilter';
 import PrepTimeFilter from './Components/PrepTimeFilter/PrepTimeFilter';
 import HealthyOptionFilter from './Components/HealthyOptionFilter/HealthyOptionFilter';
+import { menuApi } from '../../../../api/menuApi';
 
 const SideFilterBar = ({ onFilterChange }) => {
   const [categories, setCategories] = useState([]);
@@ -35,9 +36,11 @@ const SideFilterBar = ({ onFilterChange }) => {
         setLoading(true);
         // In a real application, you would fetch categories from your API
         // This is a placeholder that should be replaced with your actual API call
-        const response = await fetch('/api/menu-categories');
-        const data = await response.json();
+        const {
+          data,
+        } = await menuApi.getCategories();
         setCategories(data);
+
       } catch (error) {
         console.error('Error fetching categories:', error);
         // Fallback with some common food categories
@@ -151,7 +154,7 @@ const SideFilterBar = ({ onFilterChange }) => {
   };
 
   return (
-    <div className="sticky top-0 h-screen overflow-y-auto bg-white rounded-lg p-4 pb-20 basis-1/3 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1),0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+    <div className="sticky top-10 h-screen overflow-y-auto bg-white rounded-lg p-4 pb-20 basis-1/3 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1),0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-lg font-semibold text-gray-800">Filters</h2>
         <button 
@@ -165,7 +168,7 @@ const SideFilterBar = ({ onFilterChange }) => {
       {/* Sort By filter */}
       <SortByFilter 
       sortBy={sortBy} 
-      handleSortChange={handleSortChange}
+      onSortChange={handleSortChange}
       />
 
 
