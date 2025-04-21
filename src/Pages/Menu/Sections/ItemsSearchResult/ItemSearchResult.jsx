@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import FoodCard from '../../../../SharedComponents/Card/FoodCard';
+import FoodCard from "../../../../SharedComponents/Card/FoodCard.jsx";
 
 const ItemSearchResult = ({ 
     data, 

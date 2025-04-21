@@ -6,8 +6,8 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { menuApi } from "../../api/menuApi";
 import SearchBar from "./Sections/SearchBar/SearchBar";
 import Error from "../../SharedComponents/Error/Error";
-import FoodCardSkeleton from "../../SharedComponents/Card/FoodCardSkeleton";
 import { useInView } from "react-intersection-observer";
+import RestaurantCardSkeleton from "../../SharedComponents/Card/RestaurantCardSkeleton";
 
 const Menu = () => {
 
@@ -61,7 +61,7 @@ const Menu = () => {
             {Array(10)
                 .fill(0)
                 .map((_, index) => (
-                    <FoodCardSkeleton
+                    <RestaurantCardSkeleton
                         key={`skeleton-${index}`} />
                 ))}
         </div>

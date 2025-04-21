@@ -35,12 +35,12 @@ const router = createBrowserRouter([
         element: <Menu />,
       },
       {
-        // path: "/restaurant/:id",
-        path: "/restaurant",
+        path: "/restaurant/:id",
+        // path: "/restaurant",
         element: <Restaurant/>,
-        // loader: async ({ params }) => {
-        //   return fetch(`https://foodies-server.vercel.app/restaurant/${params.id}`);
-        // },
+        loader: async ({ params }) => {
+          return fetch(`http://localhost:5000/api/v1/restaurant/getRestaurant/${params.id}`);
+        },
       }
     ],
   },

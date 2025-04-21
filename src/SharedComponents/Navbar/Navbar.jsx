@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import { User, MapPin, ChevronDown, Loader } from "lucide-react";
 import Cart from "../Components/Cart";
 import { AuthContext } from "../../providers/AuthProvider/AuthContext";
+import { NavLink } from "react-router-dom";
 
 export default function Navbar() {
 
@@ -73,11 +74,11 @@ export default function Navbar() {
     <header className="bg-white shadow-md py-4 px-6">
       <div className="flex items-center justify-between relative max-w-[1520px] w-11/12 mx-auto px-4 sm:px-6 lg:px-8 h-full">
         {/* Logo on the left */}
-        <div className="flex-1">
+        <NavLink to="/" className="flex-1">
           <h1 className="text-2xl font-bold text-orange-500 logoFont">
             foodies
           </h1>
-        </div>
+        </NavLink>
 
         {/* Location in the middle */}
         <div className="flex-1 flex justify-center">

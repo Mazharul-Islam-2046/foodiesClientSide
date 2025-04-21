@@ -1,13 +1,32 @@
 import { useEffect, useRef, useState } from "react";
 import FoodCard from "../../SharedComponents/Card/FoodCard";
 import RestaurantHeader from "./Sections/Restaurant_Header/RestaurantHeader";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLoaderData } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { menuApi } from "../../api/menuApi";
 
 const Restaurant = () => {
 
     const [isOpen, setIsOpen] = useState(false);
     const asideRef = useRef(null);
 
+    const data = useLoaderData();
+    const restaurantData = data.data;
+    console.log(restaurantData?.menu)
+    const {data: menuItems} = useQuery({
+        queryKey: ['menuItems', restaurantData?.id],
+        queryFn: async ({ pageParam = 1 }) => {
+            try {
+                const response = await menuApi.getMenuItemsByIds(pageParam, 20, restaurantData?.menu);
+                // Return the exact format your API provides
+                return response.data.data;
+            } catch (error) {
+                console.error("Error fetching menu items:", error);
+                throw error;
+            }
+        },
+    });
+    console.log("restaurantData: ",restaurantData, "menuItems: ", menuItems);
 
     useEffect(() => {
         function handleClickOutside(event) {
@@ -31,22 +50,11 @@ const Restaurant = () => {
 
   return (
     <div className=" w-11/12 max-w-[1520px] mx-auto pt-12 pb-8 px-4 sm:px-6 lg:px-14">
-      <RestaurantHeader />
+      <RestaurantHeader restaurantData={restaurantData} />
 
       {/* Category Slider */}
       <div className="flex items-center gap-3 py-2 sticky top-0 bg-white z-10 overflow-x-auto scrollbar-hide">
-        {[
-          "category",
-          "category",
-          "category",
-          "category",
-          "category",
-          "category",
-          "category",
-          "category",
-          "category",
-          "category",
-        ].map((item, index) => (
+        {restaurantData?.categories.map((item, index) => (
           <NavLink
             to={"/restaurant"}
             key={index}
@@ -65,8 +73,8 @@ const Restaurant = () => {
       <div>
         <div>
           <h2>Category</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {[1, 2, 3, 4, 5, 6].map((item, index) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-7">
+            {menuItems?.map((item, index) => (
               <FoodCard key={index} item={item} />
             ))}
           </div>

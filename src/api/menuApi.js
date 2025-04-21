@@ -32,5 +32,10 @@ export const menuApi = {
 
   getCategories: () => {
     return api.get("/menuItems/fetchCategories");
+  },
+
+  getMenuItemsByIds: (page = 1, limit = 10, ids = []) => {
+    const idParams = ids.map(id => `ids[]=${id}`).join('&');
+    return api.get(`/menuItems/getMenuItemsByIds?page=${page}&limit=${limit}&${idParams}`);
   }
 };
