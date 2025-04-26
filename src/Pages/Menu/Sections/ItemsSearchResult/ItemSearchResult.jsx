@@ -16,10 +16,9 @@ const ItemSearchResult = ({
     useEffect(() => {
         if (data && data.pages.length > 0) {
             // Flatten all pages into a single array of items
-            console.log("dataNew:- ", data);
+            // console.log("dataNew:- ", data);
             const allItems = data.pages.map(page => page.menuItems).flat();
             setItems(allItems);
-            console.log("items:- ", items);
         }
         if (data && data.pages.length === 0) {
             setItems([]);
@@ -29,7 +28,6 @@ const ItemSearchResult = ({
             console.log("inView");
             fetchNextPage();
         }
-        console.log("data: ",data);
     }, [data, fetchNextPage, hasNextPage, inView]);
 
     return (

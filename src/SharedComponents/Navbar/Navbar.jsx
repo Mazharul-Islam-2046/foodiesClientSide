@@ -92,7 +92,7 @@ export default function Navbar() {
             ) : (
               <>
                 <span className="mr-1">{location}</span>
-                <ChevronDown size={16} />
+                {/* <ChevronDown size={16} /> */}
               </>
             )}
           </button>

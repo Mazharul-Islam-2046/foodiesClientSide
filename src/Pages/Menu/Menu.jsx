@@ -17,8 +17,10 @@ const Menu = () => {
 
     const onFilterChange = (newFilters) => {
         setFilters(search ? { search, ...newFilters } : newFilters);
-        console.log("Filters Debug: ", filters);
     };
+
+    // const sortBy = filters.sortBy || "popularity";
+    const {sortBy, ...restFilters} = filters
 
     const {
         data,
@@ -32,7 +34,7 @@ const Menu = () => {
         queryKey: ['fillteredMenuItems', filters, search],
         queryFn: async ({ pageParam = 1 }) => {
             try {
-                const response = await menuApi.filterMenuItems(pageParam, 20, filters);
+                const response = await menuApi.filterMenuItems(pageParam, 20, restFilters, sortBy);
                 setFilteredMenuItems(response.data.data.menuItems);
                 // Return the exact format your API provides
                 return response.data.data;
@@ -42,7 +44,7 @@ const Menu = () => {
             }
         },
         getNextPageParam: (lastPage, allPages) => {
-            console.log(lastPage, allPages);
+            console.log(allPages)
             // More robust nextPage detection
             if (!lastPage) return undefined
             if (lastPage.menuItems.length === 0) return undefined;

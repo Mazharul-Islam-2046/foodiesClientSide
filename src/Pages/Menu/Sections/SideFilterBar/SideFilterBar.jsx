@@ -104,6 +104,7 @@ const SideFilterBar = ({ onFilterChange }) => {
   // Handle sort change
   const handleSortChange = (e) => {
     setSortBy(e.target.value);
+    console.log("kaun talha", e.target.value);
   };
 
   // Apply filters

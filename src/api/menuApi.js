@@ -14,8 +14,8 @@ export const menuApi = {
     });
   },
 
-  filterMenuItems: (page = 1, limit = 10, filters = {}) => {
-    return api.get(`/menuItems/getFilterMenuItems?page=${page}&limit=${limit}&sortBy=${filters.sortBy || "popularity"}`, {
+  filterMenuItems: (page = 1, limit = 10, filters = {}, sortBy = "popularity") => {
+    return api.get(`/menuItems/getFilterMenuItems?page=${page}&limit=${limit}&sortBy=${sortBy}`, {
       params: {
         ...filters
       }
