@@ -8,6 +8,7 @@ import Home from "./Pages/Home/Home";
 import Menu from "./Pages/Menu/Menu";
 import Restaurant from "./Pages/Restaurant/Restaurant";
 import AuthProvider from "./providers/AuthProvider/AuthProvider";
+import { CartProvider } from "./providers/CartContext/CartContext";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -50,7 +51,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
+        <CartProvider>
         <RouterProvider router={router} />
+        </CartProvider>
       </AuthProvider>
     </QueryClientProvider>
   </React.StrictMode>

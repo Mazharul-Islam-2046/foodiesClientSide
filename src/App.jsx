@@ -2,6 +2,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import './App.css'
 import Navbar from './SharedComponents/Navbar/Navbar'
 import { Outlet } from 'react-router-dom'
+import CartBadge from './SharedComponents/Components/CartBadge'
 
 function App() {
 
@@ -10,6 +11,7 @@ function App() {
       <Navbar/>
       <Outlet/>
       <ReactQueryDevtools initialIsOpen={false} />
+      <CartBadge/>
     </>
   )
 }
