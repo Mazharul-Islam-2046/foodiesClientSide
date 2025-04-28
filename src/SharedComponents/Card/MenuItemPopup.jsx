@@ -1,11 +1,26 @@
-// MenuItemPopup.jsx
-import { X, Clock, Flame, Star, Heart } from "lucide-react";
+import { X, Clock, Flame, Star, Heart, ShoppingCart, Minus, Plus } from "lucide-react";
+import { useState } from "react";
+import { useCart } from "../../providers/CartContext/CartContext.jsx"
 
 const MenuItemPopup = ({ item, isOpen, onClose }) => {
+  const { addItem } = useCart();
+  const [quantity, setQuantity] = useState(1);
+
   if (!item || !isOpen) return null;
   
   const formatPrice = (price) =>
     price ? `${parseInt(price).toFixed(2)}tk` : "Price unavailable";
+
+  const handleAddToCart = () => {
+    // Add the item with the selected quantity
+    for (let i = 0; i < quantity; i++) {
+      addItem(item);
+    }
+    onClose();
+  };
+
+  const incrementQuantity = () => setQuantity(qty => qty + 1);
+  const decrementQuantity = () => setQuantity(qty => qty > 1 ? qty - 1 : 1);
 
   const getDietryBadge = (pref) => {
     const badgeClasses = {
@@ -138,9 +153,33 @@ const MenuItemPopup = ({ item, isOpen, onClose }) => {
             </div>
           </div>
           
+          {/* Quantity selector */}
+          <div className="flex items-center justify-between mb-6 mt-2 p-3 bg-gray-50 rounded-lg">
+            <span className="font-medium text-gray-700">Quantity</span>
+            <div className="flex items-center gap-4">
+              <button 
+                onClick={decrementQuantity}
+                className="w-8 h-8 flex items-center justify-center bg-gray-200 rounded-full hover:bg-gray-300 transition-colors"
+              >
+                <Minus size={16} />
+              </button>
+              <span className="font-medium text-lg w-6 text-center">{quantity}</span>
+              <button 
+                onClick={incrementQuantity}
+                className="w-8 h-8 flex items-center justify-center bg-gray-200 rounded-full hover:bg-gray-300 transition-colors"
+              >
+                <Plus size={16} />
+              </button>
+            </div>
+          </div>
+          
           {/* Action Buttons - Larger */}
           <div className="flex gap-4 mt-8">
-            <button className="flex-1 py-3 px-6 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-lg transition-all text-lg shadow-md">
+            <button 
+              className="flex-1 py-3 px-6 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-lg transition-all text-lg shadow-md flex items-center justify-center gap-2"
+              onClick={handleAddToCart}
+            >
+              <ShoppingCart size={20} />
               Add to Order
             </button>
             <button 

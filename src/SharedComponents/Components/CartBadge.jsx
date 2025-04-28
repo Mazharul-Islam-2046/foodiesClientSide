@@ -1,16 +1,20 @@
 import { useState, useEffect, useRef } from 'react';
 import { Trash2, Plus, Minus, ShoppingBag, X, ChevronUp } from 'lucide-react';
+import { useCart } from '../../providers/CartContext/CartContext';
 
 export default function CartBadge() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [height, setHeight] = useState("auto");
   const contentRef = useRef(null);
-  const [cartItems, setCartItems] = useState([
-    { id: 1, name: "Margherita Pizza", price: 12.99, quantity: 1, image: "/api/placeholder/60/60" },
-    { id: 2, name: "Chicken Caesar Salad", price: 8.49, quantity: 2, image: "/api/placeholder/60/60" },
-    { id: 3, name: "Garlic Bread", price: 4.99, quantity: 1, image: "/api/placeholder/60/60" },
-    { id: 4, name: "Strawberry Smoothie", price: 5.99, quantity: 1, image: "/api/placeholder/60/60" }
-  ]);
+  // const [cartItems, setCartItems] = useState([
+  //   { id: 1, name: "Margherita Pizza", price: 12.99, quantity: 1, image: "/api/placeholder/60/60" },
+  //   { id: 2, name: "Chicken Caesar Salad", price: 8.49, quantity: 2, image: "/api/placeholder/60/60" },
+  //   { id: 3, name: "Garlic Bread", price: 4.99, quantity: 1, image: "/api/placeholder/60/60" },
+  //   { id: 4, name: "Strawberry Smoothie", price: 5.99, quantity: 1, image: "/api/placeholder/60/60" }
+  // ]);
+
+  const { cartItems, addItem } = useCart();
+  console.log(cartItems)
   const [animateItem, setAnimateItem] = useState(null);
 
   // Calculate and update content height when content changes or expansion state changes
@@ -33,7 +37,7 @@ export default function CartBadge() {
     setAnimateItem(id);
     setTimeout(() => setAnimateItem(null), 300);
     
-    setCartItems(cartItems.map(item => {
+    addItem(cartItems.map(item => {
       if (item.id === id) {
         const newQuantity = Math.max(1, item.quantity + change);
         return { ...item, quantity: newQuantity };
@@ -45,7 +49,7 @@ export default function CartBadge() {
   const removeItem = (id) => {
     setAnimateItem(`remove-${id}`);
     setTimeout(() => {
-      setCartItems(cartItems.filter(item => item.id !== id));
+      addItem(cartItems.filter(item => item.id !== id));
     }, 300);
   };
 

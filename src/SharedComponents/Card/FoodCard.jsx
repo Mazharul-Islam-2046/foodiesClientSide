@@ -1,14 +1,15 @@
-// FoodCard.jsx
 import { useState, memo } from "react";
-import { Heart } from "lucide-react";
+import { Heart, ShoppingCart } from "lucide-react";
 import { createPortal } from "react-dom";
 import MenuItemPopup from "./MenuItemPopup";
+import { useCart } from "../../providers/CartContext/CartContext.jsx"
 
 const FoodCard = memo(({ item }) => {
   const [favourite, setFavourite] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const { addItem } = useCart();
 
   if (!item) return null;
 
@@ -20,6 +21,11 @@ const FoodCard = memo(({ item }) => {
     return text.length <= maxLength
       ? text
       : text.slice(0, maxLength).trim() + "... Details";
+  };
+
+  const handleAddToCart = (e) => {
+    e.stopPropagation();
+    addItem(item);
   };
 
   return (
@@ -98,12 +104,18 @@ const FoodCard = memo(({ item }) => {
           </div>
           
           {/* Button - absolutely positioned at bottom */}
-          <div className="mt-auto">
+          <div className="mt-auto flex gap-2">
             <button 
-              className="w-full py-2 rounded-xl bg-orange-500 text-white hover:bg-black transition-colors duration-300"
+              className="flex-1 py-2 rounded-xl bg-orange-500 text-white hover:bg-black transition-colors duration-300"
               onClick={() => setIsPopupOpen(true)}
             >
               View Details
+            </button>
+            <button 
+              className="py-2 px-3 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-800 transition-colors duration-300"
+              onClick={handleAddToCart}
+            >
+              <ShoppingCart size={18} />
             </button>
           </div>
         </div>
