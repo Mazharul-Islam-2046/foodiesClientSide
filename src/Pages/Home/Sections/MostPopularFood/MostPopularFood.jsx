@@ -69,7 +69,7 @@ const MostPopularFood = () => {
   const hasData = foodItems && foodItems.pages && foodItems.pages.length > 0;
 
   return (
-    <div className="relative max-w-[1520px] w-11/12 mx-auto px-4 sm:px-6 lg:px-8 h-full pt-28 pb-14">
+    <div className="relative max-w-[1520px] w-11/12 mx-auto px-4 sm:px-6 lg:px-8 h-full pt-32 pb-16">
       <h2 className="text-4xl font-bold mb-10">Most Popular Food</h2>
 
       {/* Show skeleton while initially loading */}

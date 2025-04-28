@@ -1,6 +1,7 @@
 // FoodCard.jsx
 import { useState, memo } from "react";
 import { Heart } from "lucide-react";
+import { createPortal } from "react-dom";
 import MenuItemPopup from "./MenuItemPopup";
 
 const FoodCard = memo(({ item }) => {
@@ -108,13 +109,14 @@ const FoodCard = memo(({ item }) => {
         </div>
       </div>
 
-      {/* Render the popup component when isPopupOpen is true */}
-      {isPopupOpen && (
+      {/* Use React Portal to render the popup outside of the slider constraints */}
+      {isPopupOpen && createPortal(
         <MenuItemPopup 
           item={item} 
           isOpen={isPopupOpen} 
           onClose={() => setIsPopupOpen(false)} 
-        />
+        />,
+        document.body
       )}
     </>
   );

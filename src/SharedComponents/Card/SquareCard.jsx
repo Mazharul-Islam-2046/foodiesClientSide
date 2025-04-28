@@ -12,7 +12,7 @@ const SquareCard = memo(({ item }) => {
 
     return (
         <>
-            <div className= "card w-80 h-80 ratio-1/1 bg-base-100 shadow-md relative flex justify-center items-center  rounded-lg overflow-hidden cursor-grab active:cursor-grabbing"
+            <div className= "card aspect-square bg-base-100 shadow-md relative flex justify-center items-center  rounded-lg overflow-hidden cursor-grab active:cursor-grabbing"
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
             >

@@ -58,13 +58,15 @@ const CardSlider = memo(({ options }) => {
       <Swiper
         ref={swiperRef}
         modules={[A11y, FreeMode, Navigation]}
-        spaceBetween={16}
+        spaceBetween={10}
         slidesPerView="auto"
         breakpoints={{
           320: { slidesPerView: 1.4, spaceBetween: 6 },
           768: { slidesPerView: 2.8, spaceBetween: 8 },
           1024: { slidesPerView: 3.5, spaceBetween: 8 },
           1440: { slidesPerView: 4.4, spaceBetween: 12 },
+          1920: { slidesPerView: 4.8, spaceBetween: 16 },
+          // 1920: { slidesPerView: 5.2, spaceBetween: 16 },
         }}
         freeMode={{
           enabled: true,
@@ -85,7 +87,7 @@ const CardSlider = memo(({ options }) => {
           return (
             <SwiperSlide
               key={key}
-              className="py-2 pr-8"
+              className="py-2"
               style={{ height: 'auto' }}
             >
               <Card item={item} />
