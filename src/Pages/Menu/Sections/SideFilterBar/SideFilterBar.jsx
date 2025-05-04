@@ -1,7 +1,7 @@
 // SideFilterBar.jsx
 import { useState, useEffect } from 'react';
-import SortByFilter from './Components/SortByFilter/SortByFilter';
-import StarRattings from './Components/StarRattings/STarRattings';
+import SortByFilter from './Components/SortByFilter/SortByFilter.jsx';
+import StarRattings from './Components/StarRattings/StarRattings.jsx';
 import PricingRangeFilter from './Components/PricingRangeFilter/PricingRangeFilter';
 import CategoryFilter from './Components/CategoryFilter/CategoryFilter';
 import DietaryPreferencesFilter from './Components/DietaryPreferencesFilter/DietaryPreferencesFilter';

@@ -25,7 +25,6 @@ const ItemSearchResult = ({
             console.log('data is empty');
         }
         if (inView && hasNextPage) {
-            console.log("inView");
             fetchNextPage();
         }
     }, [data, fetchNextPage, hasNextPage, inView]);

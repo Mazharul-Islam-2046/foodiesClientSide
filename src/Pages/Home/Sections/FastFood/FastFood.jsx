@@ -4,7 +4,7 @@ import CardSlider from "../../../../SharedComponents/CardSlider/CardSlider.jsx";
 import FoodCardSkeleton from "../../../../SharedComponents/Card/FoodCardSkeleton.jsx";
 import Error from "../../../../SharedComponents/Error/Error.jsx";
 
-const QuickBites = () => {
+const FastFood = () => {
 
   // Fetching menu items using React Query
   const {
@@ -70,7 +70,7 @@ const QuickBites = () => {
 
   return (
     <div className="relative max-w-[1520px] w-11/12 mx-auto px-4 sm:px-6 lg:px-8 h-full pt-32 pb-16">
-      <h2 className="text-4xl font-bold mb-10">Quick Bites</h2>
+      <h2 className="text-4xl font-bold mb-10">Fast Food</h2>
 
       {/* Show skeleton while initially loading */}
       {isLoading && !hasData && renderLoadingSkeleton()}
@@ -112,4 +112,4 @@ const QuickBites = () => {
   );
 };
 
-export default QuickBites;
+export default FastFood;
