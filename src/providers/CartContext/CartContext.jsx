@@ -52,6 +52,15 @@ export function CartProvider({ children }) {
   };
 
 
+  // item count function
+  const calculateItemCount = () => {
+    const itemCount = cartItems.reduce((total, item) => {
+      return total + item.quantity;
+    }, 0);
+    setItemCount(itemCount);
+  };
+
+
 
 
 
@@ -61,6 +70,7 @@ export function CartProvider({ children }) {
     calculateSubtotal();
     calculateDeliveryFee();
     calculateTax();
+    calculateItemCount()
   }, [cartItems]);
 
 
