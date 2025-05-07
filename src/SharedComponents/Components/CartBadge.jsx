@@ -6,12 +6,6 @@ export default function CartBadge() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [height, setHeight] = useState("auto");
   const contentRef = useRef(null);
-  // const [cartItems, setCartItems] = useState([
-  //   { id: 1, name: "Margherita Pizza", price: 12.99, quantity: 1, image: "/api/placeholder/60/60" },
-  //   { id: 2, name: "Chicken Caesar Salad", price: 8.49, quantity: 2, image: "/api/placeholder/60/60" },
-  //   { id: 3, name: "Garlic Bread", price: 4.99, quantity: 1, image: "/api/placeholder/60/60" },
-  //   { id: 4, name: "Strawberry Smoothie", price: 5.99, quantity: 1, image: "/api/placeholder/60/60" }
-  // ]);
 
   const { cartItems, addItem } = useCart();
   console.log(cartItems)
@@ -38,7 +32,7 @@ export default function CartBadge() {
     setTimeout(() => setAnimateItem(null), 300);
     
     addItem(cartItems.map(item => {
-      if (item.id === id) {
+      if (item._id === id) {
         const newQuantity = Math.max(1, item.quantity + change);
         return { ...item, quantity: newQuantity };
       }
@@ -125,7 +119,7 @@ export default function CartBadge() {
                 
                 <div className="ml-3 flex-grow">
                   <h3 className="font-medium">{item.name}</h3>
-                  <div className="text-orange-500 font-semibold">${item.price.toFixed(2)}</div>
+                  <div className="text-orange-500 font-semibold">${item?.price?.toFixed(2)}</div>
                 </div>
                 
                 <div className="flex flex-col items-end">
@@ -153,7 +147,7 @@ export default function CartBadge() {
                   <button 
                     onClick={(e) => {
                       e.stopPropagation();
-                      removeItem(item.id);
+                      removeItem(item._id);
                     }}
                     className="text-red-500 hover:text-red-700 flex items-center text-xs transition-colors duration-200"
                   >

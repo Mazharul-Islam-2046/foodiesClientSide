@@ -7,11 +7,13 @@ export function CartProvider({ children }) {
   const [cartItems, setCartItems] = useState([]);
   
   const addItem = (item) => {
+
     // Check if item already exists
-    const existingItem = cartItems.find(i => i.id === item.id);
+    const existingItem = cartItems.find(i => i._id === item._id);
     if (existingItem) {
       // Update quantity
       updateQuantity(item.id, existingItem.quantity + 1);
+      console.log("existing item: ", item, "id: ", item.id, "quantity: ", existingItem.quantity);
     } else {
       // Add new item
       setCartItems([...cartItems, { ...item, quantity: 1 }]);
