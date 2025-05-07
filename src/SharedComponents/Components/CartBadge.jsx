@@ -1,15 +1,24 @@
-import { useState, useEffect, useRef } from 'react';
-import { Trash2, Plus, Minus, ShoppingBag, X, ChevronUp } from 'lucide-react';
-import { useCart } from '../../providers/CartContext/CartContext';
+import { useState, useEffect, useRef } from "react";
+import { Trash2, Plus, Minus, ShoppingBag, X, ChevronUp } from "lucide-react";
+import { useCart } from "../../providers/CartContext/CartContext";
 
 export default function CartBadge() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [height, setHeight] = useState("auto");
   const contentRef = useRef(null);
 
-  const { cartItems, addItem } = useCart();
-  console.log(cartItems)
-  const [animateItem, setAnimateItem] = useState(null);
+  // getting cart functions and datas from useCart
+  const {
+    cartItems,
+    itemCount,
+    subtotal,
+    deliveryFee,
+    tax,
+    total,
+    // clearCart,
+    removeItem,
+    updateQuantity,
+  } = useCart();
 
   // Calculate and update content height when content changes or expansion state changes
   useEffect(() => {
@@ -23,57 +32,40 @@ export default function CartBadge() {
     }
   }, [isExpanded, cartItems]);
 
+  // Toggle cart expansion
   const toggleCart = () => {
     setIsExpanded(!isExpanded);
   };
 
-  const updateQuantity = (id, change) => {
-    setAnimateItem(id);
-    setTimeout(() => setAnimateItem(null), 300);
-    
-    addItem(cartItems.map(item => {
-      if (item._id === id) {
-        const newQuantity = Math.max(1, item.quantity + change);
-        return { ...item, quantity: newQuantity };
-      }
-      return item;
-    }));
-  };
-
-  const removeItem = (id) => {
-    setAnimateItem(`remove-${id}`);
-    setTimeout(() => {
-      addItem(cartItems.filter(item => item.id !== id));
-    }, 300);
-  };
-
-  const itemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-  const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  const deliveryFee = 2.99;
-  const tax = subtotal * 0.08;
-  const total = subtotal + deliveryFee + tax;
+  //
 
   return (
-    <div 
+    <div
       className={`fixed bottom-4 right-4 z-50 transform transition-all duration-500 ease-in-out
-                  ${isExpanded ? 'w-full sm:w-96 max-w-full sm:max-w-lg' : 'w-auto'}`} 
-      style={{ 
-        maxWidth: isExpanded ? '500px' : 'auto',
-        boxShadow: '0 4px 16px rgba(0, 0, 0, 0.2)',
-        borderRadius: isExpanded ? '16px' : '24px',
-        transformOrigin: 'bottom right',
-        transform: `scale(${isExpanded ? 1 : 0.98}) translateY(${isExpanded ? 0 : '4px'})`,
+                  ${
+                    isExpanded
+                      ? "w-full sm:w-96 max-w-full sm:max-w-lg"
+                      : "w-auto"
+                  }`}
+      style={{
+        maxWidth: isExpanded ? "500px" : "auto",
+        boxShadow: "0 4px 16px rgba(0, 0, 0, 0.2)",
+        borderRadius: isExpanded ? "16px" : "24px",
+        transformOrigin: "bottom right",
+        transform: `scale(${isExpanded ? 1 : 0.98}) translateY(${
+          isExpanded ? 0 : "4px"
+        })`,
         opacity: 1,
-        willChange: 'transform, width, max-width'
+        willChange: "transform, width, max-width",
       }}
     >
       {/* Badge/Header that's always visible */}
-      <div 
+      <div
         className="bg-orange-500 text-white p-4 flex items-center justify-between cursor-pointer rounded-lg transition-all duration-500 ease-in-out"
         onClick={toggleCart}
-        style={{ 
-          borderRadius: isExpanded ? '16px 16px 0 0' : '24px',
-          transform: isExpanded ? 'translateY(0)' : 'translateY(0)',
+        style={{
+          borderRadius: isExpanded ? "16px 16px 0 0" : "24px",
+          transform: isExpanded ? "translateY(0)" : "translateY(0)",
         }}
       >
         <div className="flex items-center">
@@ -82,21 +74,23 @@ export default function CartBadge() {
         </div>
         <div className="flex items-center">
           <span className="font-bold mr-3">${total.toFixed(2)}</span>
-          <ChevronUp 
-            className={`transform transition-transform duration-500 ease-in-out ${isExpanded ? '' : 'rotate-180'}`} 
-            size={20} 
+          <ChevronUp
+            className={`transform transition-transform duration-500 ease-in-out ${
+              isExpanded ? "" : "rotate-180"
+            }`}
+            size={20}
           />
         </div>
       </div>
-      
+
       {/* Expandable content with dynamic height */}
-      <div 
+      <div
         ref={contentRef}
         className="bg-white overflow-hidden transition-all duration-500 ease-in-out rounded-b-lg"
-        style={{ 
+        style={{
           maxHeight: height,
           opacity: isExpanded ? 1 : 0,
-          transition: 'max-height 500ms ease-in-out, opacity 400ms ease-in-out'
+          transition: "max-height 500ms ease-in-out, opacity 400ms ease-in-out",
         }}
       >
         {/* Items list */}
@@ -107,44 +101,47 @@ export default function CartBadge() {
               <p>Your cart is empty</p>
             </div>
           ) : (
-            cartItems.map(item => (
-              <div 
-                key={item.id} 
-                className={`flex items-center py-3 border-b transition-all duration-300 ease-in-out ${
-                  animateItem === item.id ? 'scale-105 bg-orange-50' : 
-                  animateItem === `remove-${item.id}` ? 'opacity-0 translate-x-full' : ''
-                }`}
+            cartItems.map((item) => (
+              <div
+                key={item._id}
+                className={`flex items-center py-3 border-b transition-all duration-300 ease-in-out `}
               >
-                <img src={item.image} alt={item.name} className="w-12 h-12 rounded object-cover" />
-                
+                <img
+                  src={item.imageUrl}
+                  alt={item.name}
+                  className="w-12 h-12 rounded object-cover"
+                />
+
                 <div className="ml-3 flex-grow">
                   <h3 className="font-medium">{item.name}</h3>
-                  <div className="text-orange-500 font-semibold">${item?.price?.toFixed(2)}</div>
+                  <div className="text-orange-500 font-semibold">
+                    ${item?.price?.toFixed(2)}
+                  </div>
                 </div>
-                
+
                 <div className="flex flex-col items-end">
                   <div className="flex items-center border rounded mb-2">
-                    <button 
+                    <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        updateQuantity(item.id, -1);
-                      }} 
+                        updateQuantity(item._id, 1, "remove");
+                      }}
                       className="px-2 py-1 text-gray-600 hover:bg-gray-100 transition-colors duration-200"
                     >
                       <Minus size={14} />
                     </button>
                     <span className="px-2">{item.quantity}</span>
-                    <button 
+                    <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        updateQuantity(item.id, 1);
-                      }} 
+                        updateQuantity(item._id, 1, "add");
+                      }}
                       className="px-2 py-1 text-gray-600 hover:bg-gray-100 transition-colors duration-200"
                     >
                       <Plus size={14} />
                     </button>
                   </div>
-                  <button 
+                  <button
                     onClick={(e) => {
                       e.stopPropagation();
                       removeItem(item._id);
@@ -180,21 +177,22 @@ export default function CartBadge() {
                 <span>${total.toFixed(2)}</span>
               </div>
             </div>
-            
-            <button 
+
+            <button
               onClick={(e) => e.stopPropagation()}
               className="bg-orange-500 hover:bg-orange-600 text-white py-3 px-4 rounded-lg w-full mt-4 font-medium transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-95"
             >
               Proceed to Checkout
             </button>
-            
+
             <div className="text-center mt-3 text-sm text-gray-600 pb-4">
-              or <button 
-                    onClick={toggleCart}
-                    className="text-orange-500 hover:underline transition-colors duration-200"
-                  >
-                    Continue Shopping
-                  </button>
+              or{" "}
+              <button
+                onClick={toggleCart}
+                className="text-orange-500 hover:underline transition-colors duration-200"
+              >
+                Continue Shopping
+              </button>
             </div>
           </div>
         )}
