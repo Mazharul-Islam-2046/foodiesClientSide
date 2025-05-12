@@ -11,12 +11,12 @@ import RestaurantCardSkeleton from "../../SharedComponents/Card/RestaurantCardSk
 
 const Menu = () => {
 
-    const [search, setSearch] = useState('');
+    const [searchName, setSearchName] = useState('');
     const [filters, setFilters] = useState({});
     const [filteredMenuItems, setFilteredMenuItems] = useState([]);
 
     const onFilterChange = (newFilters) => {
-        setFilters(search ? { search, ...newFilters } : newFilters);
+        setFilters(searchName ? { searchName, ...newFilters } : newFilters);
     };
 
     // const sortBy = filters.sortBy || "popularity";
@@ -31,7 +31,7 @@ const Menu = () => {
         fetchNextPage,
         isFetchingNextPage
     } = useInfiniteQuery({
-        queryKey: ['fillteredMenuItems', filters, search],
+        queryKey: ['fillteredMenuItems', filters, searchName],
         queryFn: async ({ pageParam = 1 }) => {
             try {
                 const response = await menuApi.filterMenuItems(pageParam, 20, restFilters, sortBy);
@@ -97,7 +97,7 @@ const Menu = () => {
             <div className="flex relative max-w-[1520px] w-11/12 mx-auto px-4 sm:px-6 lg:px-8 h-full gap-8">
                 <SideFilterBar onFilterChange={onFilterChange} />
                 <div className="flex flex-col flex-grow gap-6">
-                    <SearchBar setSearch={setSearch} />
+                    <SearchBar setSearchName={setSearchName} setFilters={setFilters} />
 
 
                     {/* Item search result */}
