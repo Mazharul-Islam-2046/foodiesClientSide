@@ -39,7 +39,7 @@ const SideFilterBar = ({ onFilterChange }) => {
         const {
           data,
         } = await menuApi.getCategories();
-        setCategories(data);
+        setCategories(data.data);
 
       } catch (error) {
         console.error('Error fetching categories:', error);
@@ -133,6 +133,7 @@ const SideFilterBar = ({ onFilterChange }) => {
       }
     });
 
+    console.log(filters)
     onFilterChange(filters);
   };
 

@@ -36,6 +36,8 @@ const Menu = () => {
             try {
                 const response = await menuApi.filterMenuItems(pageParam, 20, restFilters, sortBy);
                 setFilteredMenuItems(response.data.data.menuItems);
+
+                console.log("filteredMenuItems for Category: ",response.data.data)
                 // Return the exact format your API provides
                 return response.data.data;
             } catch (error) {
@@ -55,6 +57,9 @@ const Menu = () => {
         refetchOnWindowFocus: false,
         retry: 2,
     });
+
+
+    console.log("Category Filter Data", data)
 
 
     // Render loading skeletons that match your food card design

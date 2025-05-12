@@ -15,6 +15,7 @@ export const menuApi = {
   },
 
   filterMenuItems: (page = 1, limit = 10, filters = {}, sortBy = "popularity") => {
+    console.log(filters)
     return api.get(`/menuItems/getFilterMenuItems?page=${page}&limit=${limit}&sortBy=${sortBy}`, {
       params: {
         ...filters

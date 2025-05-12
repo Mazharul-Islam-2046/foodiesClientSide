@@ -2,7 +2,7 @@ import { useState, memo } from "react";
 import { Heart, ShoppingCart } from "lucide-react";
 import { createPortal } from "react-dom";
 import MenuItemPopup from "./MenuItemPopup";
-import { useCart } from "../../providers/CartContext/CartContext.jsx"
+import { useCart } from "../../providers/CartProvider/CartProvider.jsx"
 
 const FoodCard = memo(({ item }) => {
   const [favourite, setFavourite] = useState(false);

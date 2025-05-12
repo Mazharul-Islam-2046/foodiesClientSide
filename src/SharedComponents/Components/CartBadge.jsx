@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Trash2, Plus, Minus, ShoppingBag, X, ChevronUp } from "lucide-react";
-import { useCart } from "../../providers/CartContext/CartContext";
+import { useCart } from "../../providers/CartProvider/CartProvider";
 
 export default function CartBadge() {
   const [isExpanded, setIsExpanded] = useState(false);

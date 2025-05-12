@@ -1,6 +1,6 @@
 import { X, Clock, Flame, Star, Heart, ShoppingCart, Minus, Plus } from "lucide-react";
 import { useState } from "react";
-import { useCart } from "../../providers/CartContext/CartContext.jsx"
+import { useCart } from "../../providers/CartProvider/CartProvider.jsx"
 
 const MenuItemPopup = ({ item, isOpen, onClose }) => {
   const { addItem } = useCart();
