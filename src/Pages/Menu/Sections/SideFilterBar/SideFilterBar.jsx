@@ -79,6 +79,7 @@ const SideFilterBar = ({ onFilterChange }) => {
 
   // Handle rating change
   const handleRatingChange = (value) => {
+    console.log("rattings", value)
     setRating(value);
   };
 
@@ -114,7 +115,7 @@ const SideFilterBar = ({ onFilterChange }) => {
       minPrice: priceRange.minPrice || undefined,
       maxPrice: priceRange.maxPrice || undefined,
       isHealthy: isHealthy || undefined,
-      rating: rating > 0 ? rating : undefined,
+      rating: rating > 0 ? rating*20 : undefined,
       dietaryPreferences: Object.entries(dietaryPreferences)
       // eslint-disable-next-line no-unused-vars
         .filter(([_, value]) => value)
@@ -123,6 +124,8 @@ const SideFilterBar = ({ onFilterChange }) => {
       preparationTime: preparationTime || undefined,
       sortBy: sortBy !== 'recommended' ? sortBy : undefined,
     };
+
+    console.log("fillters star", filters)
 
     // Remove undefined values and empty arrays
     Object.keys(filters).forEach(key => {
