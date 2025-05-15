@@ -1,9 +1,14 @@
 import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import {AuthContext} from "../../../providers/AuthProvider/AuthContext.js"
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const SignIn = () => {
-  // Assuming your auth provider exposes functions: userLogin and googleSignIn
+
+  const location = useLocation();
+  const navigate = useNavigate()
+
+
   const { userLogin, googleSignIn } = useContext(AuthContext);
   
   const {
@@ -19,6 +24,8 @@ const SignIn = () => {
       const user = await userLogin(data);
       console.log(user);
       reset();
+      navigate(location?.state ? location.state : '/')
+      
     } catch (error) {
       console.error("Error signing in:", error.message);
     }
@@ -28,6 +35,7 @@ const SignIn = () => {
     try {
       const user = await googleSignIn();
       console.log(user);
+      navigate(location?.state ? location.state : '/')
     } catch (error) {
       console.error("Error with Google sign in:", error.message);
     }
@@ -136,9 +144,9 @@ const SignIn = () => {
           <div className="px-8 py-6 border-t border-gray-200 text-center rounded-b-xl bg-gray-50">
             <p className="text-sm text-gray-600">
               {`Don't have an account?`}{" "}
-              <a href="/register" className="text-[#1ABC9C] hover:underline">
+              <Link to={"/register"} className="text-[#1ABC9C] hover:underline">
                 Register here
-              </a>
+              </Link>
             </p>
           </div>
         </div>

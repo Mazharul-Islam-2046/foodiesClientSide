@@ -1,4 +1,4 @@
-import { api } from "../../api/axiosInstance.js"
+import { api } from "../../api/axiosInstance.js";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import {
@@ -10,40 +10,47 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import app from "../../Firebase/firebase.config.js";
-import usersApi from "../../api/usersApi.js"
-import { AuthContext } from "./AuthContext.js"
-import { handleAuthError } from "../../utils/handleAuthError.js"
+import usersApi from "../../api/usersApi.js";
+import { AuthContext } from "./AuthContext.js";
+import { handleAuthError } from "../../utils/handleAuthError.js";
 
 const auth = getAuth(app);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);// Initialize navigate
+  const [error, setError] = useState(null); // Initialize navigate
 
-
-
-  console.log(user)
-
+  console.log(user);
 
   // Firebase Authentication Methods
   const userRegister = async (data) => {
     const { email, password, ...additionalData } = data;
+
+    console.log("user reg info :- ", email,password, additionalData);
     try {
       // Create user in Firebase
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
       const firebaseUser = userCredential.user;
 
-      // Send registration data to your backend
-      const response = await usersApi.register({
-        name: additionalData.name,
-        email: firebaseUser.email,
-        password: password, // Your backend will hash this
-        phone: additionalData.phone,
-        address: additionalData.address,
-      });
+      if (firebaseUser) {
+        // Send registration data to your backend
+        const response = await usersApi.register({
+          name: additionalData.name,
+          email: firebaseUser.email,
+          password: password, // Your backend will hash this
+          phone: additionalData.phone,
+          address: additionalData.address,
+        });
 
-      return response.data;
+        console.log(response);
+
+        return response.data;
+      }
     } catch (err) {
       handleAuthError(err);
     }
@@ -52,7 +59,11 @@ export const AuthProvider = ({ children }) => {
   const userLogin = async ({ email, password }) => {
     try {
       // Login with Firebase
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
       const firebaseUser = userCredential.user;
       console.log(firebaseUser);
 
@@ -63,7 +74,11 @@ export const AuthProvider = ({ children }) => {
       });
 
       // Store tokens
-      const { accessToken, refreshToken, user: serverUser } = response.data.data;
+      const {
+        accessToken,
+        refreshToken,
+        user: serverUser,
+      } = response.data.data;
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
 
@@ -154,7 +169,9 @@ export const AuthProvider = ({ children }) => {
           try {
             // Verify user with backend
             console.log(firebaseUser);
-            const response = await api.get(`/users/getUserByEmail/${firebaseUser.email}`);
+            const response = await api.get(
+              `/users/getUserByEmail/${firebaseUser.email}`
+            );
             setUser(response.data.data);
             console.log(response);
           } catch (err) {
@@ -201,7 +218,11 @@ export const AuthProvider = ({ children }) => {
     setError,
   };
 
-  return <AuthContext.Provider value={authContextValue}>{!loading && children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={authContextValue}>
+      {!loading && children}
+    </AuthContext.Provider>
+  );
 };
 
 AuthProvider.propTypes = {
