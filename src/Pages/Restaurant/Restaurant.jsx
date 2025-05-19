@@ -6,87 +6,137 @@ import { useQuery } from "@tanstack/react-query";
 import { menuApi } from "../../api/menuApi";
 
 const Restaurant = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [activeCategory, setActiveCategory] = useState(null);
+  const asideRef = useRef(null);
+  const categoryRefs = useRef({});
 
-    const [isOpen, setIsOpen] = useState(false);
-    const asideRef = useRef(null);
+  const data = useLoaderData();
+  const restaurantData = data.data;
+  
+  const { data: menuItems } = useQuery({
+    queryKey: ['menuItems', restaurantData?.id],
+    queryFn: async ({ pageParam = 1 }) => {
+      try {
+        const response = await menuApi.getMenuItemsByIds(pageParam, 20, restaurantData?.menu);
+        return response.data.data;
+      } catch (error) {
+        console.error("Error fetching menu items:", error);
+        throw error;
+      }
+    },
+  });
 
-    const data = useLoaderData();
-    const restaurantData = data.data;
-    console.log(restaurantData?.menu)
-    const {data: menuItems} = useQuery({
-        queryKey: ['menuItems', restaurantData?.id],
-        queryFn: async ({ pageParam = 1 }) => {
-            try {
-                const response = await menuApi.getMenuItemsByIds(pageParam, 20, restaurantData?.menu);
-                // Return the exact format your API provides
-                return response.data.data;
-            } catch (error) {
-                console.error("Error fetching menu items:", error);
-                throw error;
-            }
-        },
+  // Group menu items by category
+  const groupedMenuItems = {};
+  
+  if (menuItems && restaurantData?.categories) {
+    // Initialize all categories with empty arrays
+    restaurantData.categories.forEach(category => {
+      groupedMenuItems[category] = [];
     });
-    console.log("restaurantData: ",restaurantData, "menuItems: ", menuItems);
-
-    useEffect(() => {
-        function handleClickOutside(event) {
-          if (asideRef.current && !asideRef.current.contains(event.target)) {
-            setIsOpen(false);
-          }
-        }
     
-        if (isOpen) {
-          document.addEventListener('mousedown', handleClickOutside);
-        } else {
-          document.removeEventListener('mousedown', handleClickOutside);
-        }
-    
-        return () => {
-          document.removeEventListener('mousedown', handleClickOutside);
-        };
-      }, [isOpen]);
+    // Group menu items by their categories
+    menuItems.forEach(item => {
+      if (item.category && groupedMenuItems[item.category]) {
+        groupedMenuItems[item.category].push(item);
+      }
+    });
 
+    console.log(groupedMenuItems)
+  }
 
+  // Set first category as active on initial load
+  useEffect(() => {
+    if (restaurantData?.categories && restaurantData.categories.length > 0 && !activeCategory) {
+      setActiveCategory(restaurantData.categories[0]);
+    }
+  }, [restaurantData?.categories, activeCategory]);
+
+  // Handle clicking outside the cart sidebar
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (asideRef.current && !asideRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    }
+
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen]);
+
+  // Scroll to category section when category is clicked
+  const scrollToCategory = (category) => {
+    setActiveCategory(category);
+    if (categoryRefs.current[category]) {
+      categoryRefs.current[category].scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  };
 
   return (
-    <div className=" w-11/12 max-w-[1520px] mx-auto pt-12 pb-8 px-4 sm:px-6 lg:px-14">
+    <div className="w-11/12 max-w-[1520px] mx-auto pt-12 pb-8 px-4 sm:px-6 lg:px-14">
       <RestaurantHeader restaurantData={restaurantData} />
 
-      {/* Category Slider */}
+      {/* Category Navigation */}
       <div className="flex items-center gap-3 py-2 sticky top-0 bg-white z-10 overflow-x-auto scrollbar-hide">
-        {restaurantData?.categories.map((item, index) => (
-          <NavLink
-            to={"/restaurant"}
+        {restaurantData?.categories.map((category, index) => (
+          <button
             key={index}
-            className={({ isActive }) =>
-              isActive
-                ? "text-primary text-gray-800 font-semibold bg-orange-500 px-3 py-1 rounded-full"
-                : "text-gray-500 hover:text-primary font-semibold text-lg"
-            }
+            onClick={() => scrollToCategory(category)}
+            className={`whitespace-nowrap px-3 py-1 rounded-full font-semibold text-lg ${
+              activeCategory === category
+                ? "bg-orange-500 text-gray-800"
+                : "text-gray-500 hover:text-primary"
+            }`}
           >
-            {item}
-          </NavLink>
+            {category}
+          </button>
         ))}
       </div>
 
-      {/* Category Section */}
-      <div>
-        <div>
-          <h2>Category</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-7">
-            {menuItems?.map((item, index) => (
-              <FoodCard key={index} item={item} />
-            ))}
+      {/* Category Sections */}
+      <div className="space-y-12 mt-6">
+        {restaurantData?.categories.map((category, index) => (
+          <div 
+            key={index} 
+            ref={el => categoryRefs.current[category] = el}
+            className="scroll-mt-16"
+          >
+            <h2 className="text-2xl font-bold mb-6 text-gray-800">{category}</h2>
+            {groupedMenuItems[category]?.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-7">
+                {groupedMenuItems[category].map((item, idx) => (
+                  <FoodCard key={idx} item={item} />
+                ))}
+              </div>
+            ) : (
+              <p className="text-gray-500">No items available in this category</p>
+            )}
           </div>
-        </div>
-
-
-        {/* sidebar cart */}
-        <aside ref={asideRef} onClick={() => setIsOpen(true)} className={`fixed bottom-0 overflow-hidden right-0 w-full max-w-[460px] bg-white shadow-lg rounded-lg p-4 m-4 z-20 transition-all duration-500 ease-in-out ${isOpen ? 'h-[80vh] overflow-y-scroll scroll-smooth' : 'h-[60px]'}`}>
-            <h2>Cart</h2>
-            
-        </aside>
+        ))}
       </div>
+
+      {/* Sidebar cart */}
+      <aside 
+        ref={asideRef} 
+        onClick={() => !isOpen && setIsOpen(true)} 
+        className={`fixed bottom-0 overflow-hidden right-0 w-full max-w-[460px] bg-white shadow-lg rounded-lg p-4 m-4 z-20 transition-all duration-500 ease-in-out ${
+          isOpen ? 'h-[80vh] overflow-y-scroll scroll-smooth' : 'h-[60px]'
+        }`}
+      >
+        <h2 className="text-xl font-bold">Cart</h2>
+        {/* Cart content goes here */}
+      </aside>
     </div>
   );
 };

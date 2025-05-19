@@ -11,7 +11,6 @@ import AuthProvider from "./providers/AuthProvider/AuthProvider";
 import { CartProvider } from "./providers/CartProvider/CartProvider.jsx";
 import Register from "./Pages/Auth_Pages/Register/Register.jsx";
 import SignIn from "./Pages/Auth_Pages/SignIn/SignIn.jsx"
-import PrivateRoutes from "./PrivateRoutes/PrivateRoutes.jsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -36,7 +35,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/menu",
-        element: <PrivateRoutes><Menu /></PrivateRoutes>,
+        element: <Menu />,
       },
       {
         path: "/restaurant/:id",

@@ -41,14 +41,9 @@ export default function CartBadge() {
 
   return (
     <div
-      className={`fixed bottom-4 right-4 z-50 transform transition-all duration-500 ease-in-out
-                  ${
-                    isExpanded
-                      ? "w-full sm:w-96 max-w-full sm:max-w-lg"
-                      : "w-auto"
-                  }`}
+      className={`fixed bottom-4 right-4 z-50 transform transition-all duration-500 ease-in-out w-full sm:w-96 max-w-full sm:max-w-lg`}
       style={{
-        maxWidth: isExpanded ? "500px" : "auto",
+        maxWidth: "500px",
         boxShadow: "0 4px 16px rgba(0, 0, 0, 0.2)",
         borderRadius: isExpanded ? "16px" : "24px",
         transformOrigin: "bottom right",
