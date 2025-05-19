@@ -16,7 +16,7 @@ const RestaurantHeader = ({restaurantData}) => {
                     <div className='flex gap-3 items-center mb-4'>
                         {
                             restaurantData?.categories.map((category, index) => 
-                                (<span className='py-1 px-3 bg-orange-500 rounded-full' key={index}>{category}</span>)
+                                (<span className='py-1 px-3 bg-orange-500 rounded-full text-white' key={index}>{category}</span>)
                             )
                             
                         }

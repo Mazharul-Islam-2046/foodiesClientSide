@@ -2,7 +2,8 @@ import { useRef, useEffect, useMemo, memo } from "react";
 import { A11y, FreeMode, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SquareCard from "../Card/SquareCard";
-import FoodCard from "../Card/FoodCard";
+// import FoodCard from "../Card/FoodCard";
+import RestaurantCard from "../Card/RestaurantCard";
 
 // only core + module CSS
 import "swiper/css";
@@ -11,7 +12,7 @@ import "swiper/css/navigation";
 const CardSlider = memo(({ options }) => {
   const {
     cardType,
-    menuItems = [],
+    restaurants = [],
     isFetchingNextPage,
     hasNextPage,
     fetchNextPage,
@@ -21,15 +22,15 @@ const CardSlider = memo(({ options }) => {
   
   // Flatten paginated data synchronously
   const processedItems = useMemo(() => {
-    if (!menuItems || menuItems.length === 0) return [];
+    if (!restaurants || restaurants.length === 0) return [];
     
     if (cardType === "food") {
       // Ensure we properly flatten the nested pages structure
-      return menuItems.flatMap(page => (Array.isArray(page) ? page : []));
+      return restaurants.flatMap(page => (Array.isArray(page) ? page : []));
     } else {
-      return menuItems.flat();
+      return restaurants.flat();
     }
-  }, [menuItems, cardType]);
+  }, [restaurants, cardType]);
 
   // Handle reaching the end
   const handleReachEnd = () => {
@@ -62,10 +63,10 @@ const CardSlider = memo(({ options }) => {
         slidesPerView="auto"
         breakpoints={{
           320: { slidesPerView: 1.4, spaceBetween: 6 },
-          768: { slidesPerView: 2.8, spaceBetween: 8 },
-          1024: { slidesPerView: 3.5, spaceBetween: 8 },
-          1440: { slidesPerView: 4.4, spaceBetween: 12 },
-          1920: { slidesPerView: 4.8, spaceBetween: 16 },
+          768: { slidesPerView: 2.6, spaceBetween: 8 },
+          1024: { slidesPerView: 3.2, spaceBetween: 8 },
+          1440: { slidesPerView: 3.6, spaceBetween: 12 },
+          1920: { slidesPerView: 4.2, spaceBetween: 16 },
           // 1920: { slidesPerView: 5.2, spaceBetween: 16 },
         }}
         freeMode={{
@@ -82,7 +83,7 @@ const CardSlider = memo(({ options }) => {
       >
         {processedItems.map((item, idx) => {
           const key = `${item?.id ?? idx}-${cardType}`;
-          const Card = cardType === "food" ? FoodCard : SquareCard;
+          const Card = cardType === "restaurant" ? RestaurantCard : SquareCard;
           
           return (
             <SwiperSlide

@@ -3,7 +3,6 @@ import { Trash2, Plus, Minus, ShoppingBag, X, ChevronUp } from "lucide-react";
 import { useCart } from "../../providers/CartProvider/CartProvider";
 
 export default function CartBadge() {
-  const [isExpanded, setIsExpanded] = useState(false);
   const [height, setHeight] = useState("auto");
   const contentRef = useRef(null);
 
@@ -18,6 +17,8 @@ export default function CartBadge() {
     // clearCart,
     removeItem,
     updateQuantity,
+    isExpanded,
+    setIsExpanded
   } = useCart();
 
   // Calculate and update content height when content changes or expansion state changes

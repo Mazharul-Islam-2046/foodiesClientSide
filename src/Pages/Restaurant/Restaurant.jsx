@@ -1,13 +1,15 @@
+
 import { useEffect, useRef, useState } from "react";
 import FoodCard from "../../SharedComponents/Card/FoodCard";
 import RestaurantHeader from "./Sections/Restaurant_Header/RestaurantHeader";
-import { NavLink, useLoaderData } from "react-router-dom";
+import { useLoaderData } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { menuApi } from "../../api/menuApi";
 
 const Restaurant = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState(null);
+  const [categories, setCategories] = useState([]);
   const asideRef = useRef(null);
   const categoryRefs = useRef({});
 
@@ -27,12 +29,26 @@ const Restaurant = () => {
     },
   });
 
+  // Extract unique categories from menuItems
+  useEffect(() => {
+    if (menuItems && menuItems.length > 0) {
+      // Extract all unique categories from menuItems
+      const uniqueCategories = [...new Set(menuItems.map(item => item.category).filter(Boolean))];
+      setCategories(uniqueCategories);
+      
+      // Set first category as active if no active category yet
+      if (uniqueCategories.length > 0 && !activeCategory) {
+        setActiveCategory(uniqueCategories[0]);
+      }
+    }
+  }, [menuItems, activeCategory]);
+
   // Group menu items by category
   const groupedMenuItems = {};
   
-  if (menuItems && restaurantData?.categories) {
+  if (menuItems && categories.length > 0) {
     // Initialize all categories with empty arrays
-    restaurantData.categories.forEach(category => {
+    categories.forEach(category => {
       groupedMenuItems[category] = [];
     });
     
@@ -42,16 +58,7 @@ const Restaurant = () => {
         groupedMenuItems[item.category].push(item);
       }
     });
-
-    console.log(groupedMenuItems)
   }
-
-  // Set first category as active on initial load
-  useEffect(() => {
-    if (restaurantData?.categories && restaurantData.categories.length > 0 && !activeCategory) {
-      setActiveCategory(restaurantData.categories[0]);
-    }
-  }, [restaurantData?.categories, activeCategory]);
 
   // Handle clicking outside the cart sidebar
   useEffect(() => {
@@ -87,15 +94,15 @@ const Restaurant = () => {
     <div className="w-11/12 max-w-[1520px] mx-auto pt-12 pb-8 px-4 sm:px-6 lg:px-14">
       <RestaurantHeader restaurantData={restaurantData} />
 
-      {/* Category Navigation */}
+      {/* Category Navigation - Using dynamically extracted categories */}
       <div className="flex items-center gap-3 py-2 sticky top-0 bg-white z-10 overflow-x-auto scrollbar-hide">
-        {restaurantData?.categories.map((category, index) => (
+        {categories.map((category, index) => (
           <button
             key={index}
             onClick={() => scrollToCategory(category)}
             className={`whitespace-nowrap px-3 py-1 rounded-full font-semibold text-lg ${
               activeCategory === category
-                ? "bg-orange-500 text-gray-800"
+                ? "bg-orange-500 text-white"
                 : "text-gray-500 hover:text-primary"
             }`}
           >
@@ -104,9 +111,9 @@ const Restaurant = () => {
         ))}
       </div>
 
-      {/* Category Sections */}
+      {/* Category Sections - Using dynamically extracted categories */}
       <div className="space-y-12 mt-6">
-        {restaurantData?.categories.map((category, index) => (
+        {categories.map((category, index) => (
           <div 
             key={index} 
             ref={el => categoryRefs.current[category] = el}

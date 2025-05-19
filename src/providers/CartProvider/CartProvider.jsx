@@ -10,6 +10,7 @@ export function CartProvider({ children }) {
   const [deliveryFee, setDeliveryFee] = useState(0);
   const [tax, setTax] = useState(0);
   const [total, setTotal] = useState(0);
+  const [isExpanded, setIsExpanded] = useState(false);
   // const [animateItem, setAnimateItem] = useState(null);
 
 
@@ -154,11 +155,13 @@ export function CartProvider({ children }) {
         deliveryFee,
         tax,
         total,
+        isExpanded,
         // animateItem,
         addItem,
         updateQuantity,
         removeItem,
         clearCart,
+        setIsExpanded
       }}
     >
       {children}
