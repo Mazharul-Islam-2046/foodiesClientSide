@@ -69,7 +69,7 @@ const QuickBites = () => {
   const hasData = restaurants && restaurants.pages && restaurants.pages.length > 0;
 
   return (
-    <div className="relative max-w-[1520px] w-11/12 mx-auto px-4 sm:px-6 lg:px-8 h-full pt-32 pb-16">
+    <div className="relative max-w-[1520px] w-11/12 mx-auto px-4 sm:px-6 lg:px-8 h-full pt-12 pb-12">
       <h2 className="text-4xl font-bold mb-10">Quick Bites</h2>
 
       {/* Show skeleton while initially loading */}

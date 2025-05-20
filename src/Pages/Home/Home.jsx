@@ -8,19 +8,20 @@ import QuickBites from "./Sections/QuickBites/QuickBites";
 import SpiceUp from "./Sections/SpiceUp/SpiceUp";
 
 const Home = () => {
-    return (
-        <>
-        <Hero/>
-        <MostPopularFood/>
-        <SpiceUp/>
-        <QuickBites/>
-        <FastFood/>
-        <Biriyani/>
-        <IndianCuisine/>
-        <ExploreMenu/>
-        
-        </>
-    );
+  return (
+    <>
+      <Hero />
+      <div className="py-12">
+        <MostPopularFood />
+        <SpiceUp />
+        <QuickBites />
+        <FastFood />
+        <Biriyani />
+        <IndianCuisine />
+        <ExploreMenu />
+      </div>
+    </>
+  );
 };
 
 export default Home;
