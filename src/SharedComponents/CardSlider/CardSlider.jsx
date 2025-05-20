@@ -68,7 +68,7 @@ if (processedItems.length === 0) {
         spaceBetween={10}
         slidesPerView="auto"
         breakpoints={{
-          320: { slidesPerView: 1.4, spaceBetween: 6 },
+          320: { slidesPerView: 1.2, spaceBetween: 6 },
           768: { slidesPerView: 2.6, spaceBetween: 8 },
           1024: { slidesPerView: 3.2, spaceBetween: 8 },
           1440: { slidesPerView: 3.6, spaceBetween: 12 },

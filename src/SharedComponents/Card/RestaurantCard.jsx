@@ -90,7 +90,7 @@ const RestaurantCard = memo(({ item }) => {
           </p>
           <div className="flex flex-wrap gap-2 mb-2">
             {item.categories?.length > 0 && (
-              <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+              <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded hidden sm:block">
                 {item.categories[0] || "Uncategorized"}
               </span>
             )}

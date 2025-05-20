@@ -1,3 +1,4 @@
+import AllRestaurants from "../AllRestaurants/Restaurants";
 import Biriyani from "./Sections/Biriyani/Biriyani";
 import ExploreMenu from "./Sections/ExploreDiverseMenu/ExploreMenu";
 import FastFood from "./Sections/FastFood/FastFood";
@@ -10,7 +11,7 @@ import SpiceUp from "./Sections/SpiceUp/SpiceUp";
 const Home = () => {
   return (
     <>
-      <Hero />
+      {/* <Hero />
       <div className="py-12">
         <MostPopularFood />
         <SpiceUp />
@@ -19,7 +20,8 @@ const Home = () => {
         <Biriyani />
         <IndianCuisine />
         <ExploreMenu />
-      </div>
+      </div> */}
+      <AllRestaurants/>
     </>
   );
 };
