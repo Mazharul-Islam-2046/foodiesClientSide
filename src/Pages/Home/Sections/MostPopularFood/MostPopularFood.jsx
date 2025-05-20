@@ -17,7 +17,7 @@ const MostPopularFood = () => {
     hasNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery({
-    queryKey: ["popularItems"],
+    queryKey: ["popularRestaurants"],
     queryFn: async ({ pageParam = 1 }) => {
       try {
         const response = await restaurantApi.getAllRestaurants(pageParam, 7);
@@ -39,9 +39,6 @@ const MostPopularFood = () => {
     refetchOnWindowFocus: false,
     retry: 2,
   });
-
-
-  console.log("restaurants:- ", restaurants)
 
 
 

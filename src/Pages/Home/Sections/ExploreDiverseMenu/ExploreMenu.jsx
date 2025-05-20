@@ -39,6 +39,8 @@ const ExploreMenu = () => {
         retry: 2,
     });
 
+    console.log("foodItems:-- ",foodItems)
+
 
     // Render loading skeletons that match your food card design
     const renderLoadingSkeleton = () => (
@@ -67,8 +69,8 @@ const ExploreMenu = () => {
 
 
     return (
-        <div className="relative max-w-[1520px] w-11/12 mx-auto px-4 sm:px-6 lg:px-8 h-full pt-16 pb-16">
-          <h2 className="text-4xl font-bold mb-10">Most Popular Food</h2>
+        <div className="relative max-w-[1520px] w-11/12 mx-auto px-4 sm:px-6 lg:px-8 h-full pt-12 pb-12">
+          <h2 className="text-4xl font-bold mb-10">Explore Menu</h2>
     
           {/* Show skeleton while initially loading */}
           {isLoading && !hasData && renderLoadingSkeleton()}

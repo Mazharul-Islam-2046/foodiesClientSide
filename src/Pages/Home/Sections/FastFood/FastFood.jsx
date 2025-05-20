@@ -1,14 +1,14 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { menuApi } from "../../../../api/menuApi.js";
 import CardSlider from "../../../../SharedComponents/CardSlider/CardSlider.jsx";
 import FoodCardSkeleton from "../../../../SharedComponents/Card/FoodCardSkeleton.jsx";
 import Error from "../../../../SharedComponents/Error/Error.jsx";
+import { restaurantApi } from "../../../../api/restaurantApi.js";
 
 const FastFood = () => {
 
   // Fetching menu items using React Query
   const {
-    data: foodItems,
+    data: restaurants,
     isLoading,
     isError,
     error,
@@ -16,10 +16,10 @@ const FastFood = () => {
     hasNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery({
-    queryKey: ["popularItems"],
+    queryKey: ["popularRestaurants"],
     queryFn: async ({ pageParam = 1 }) => {
       try {
-        const response = await menuApi.getPopularMenuItems(pageParam, 7);
+        const response = await restaurantApi.getAllRestaurants(pageParam, 7);
         // Return the exact format your API provides
         return response.data.data.menuItems;
       } catch (error) {
@@ -66,7 +66,7 @@ const FastFood = () => {
 
 
   // Check if we have valid data
-  const hasData = foodItems && foodItems.pages && foodItems.pages.length > 0;
+  const hasData = restaurants && restaurants.pages && restaurants.pages.length > 0;
 
   return (
     <div className="relative max-w-[1520px] w-11/12 mx-auto px-4 sm:px-6 lg:px-8 h-full pt-32 pb-16">
@@ -76,15 +76,15 @@ const FastFood = () => {
       {isLoading && !hasData && renderLoadingSkeleton()}
 
       {/* Show error message if query fails initially */}
-      {isError && !foodItems && renderError()}
+      {isError && !restaurants && renderError()}
 
 
       {/* Show slider once data is available */}
       {hasData && (
         <CardSlider
           options={{
-            cardType: "food",
-            menuItems: foodItems.pages,
+            cardType: "restaurant",
+            restaurants: restaurants.pages,
             hasNextPage,
             isFetchingNextPage,
             fetchNextPage,
@@ -95,7 +95,7 @@ const FastFood = () => {
 
 
       {/* Show error message if query fails to load more data */}
-      {isError && foodItems && (
+      {isError && restaurants && (
         <div className="text-sm text-red-500 mt-4">
           Failed to load rest of the items. Please try again later.
         </div>

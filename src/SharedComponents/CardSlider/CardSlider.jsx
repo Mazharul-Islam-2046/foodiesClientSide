@@ -11,48 +11,54 @@ import "swiper/css/navigation";
 
 const CardSlider = memo(({ options }) => {
   const {
-    cardType,
-    restaurants = [],
-    isFetchingNextPage,
-    hasNextPage,
-    fetchNextPage,
-  } = options;
+  cardType,
+  menuItems = [],
+  restaurants = [],
+  isFetchingNextPage,
+  hasNextPage,
+  fetchNextPage,
+} = options;
+const swiperRef = useRef(null);
 
-  const swiperRef = useRef(null);
-  
-  // Flatten paginated data synchronously
-  const processedItems = useMemo(() => {
-    if (!restaurants || restaurants.length === 0) return [];
-    
-    if (cardType === "food") {
-      // Ensure we properly flatten the nested pages structure
-      return restaurants.flatMap(page => (Array.isArray(page) ? page : []));
-    } else {
-      return restaurants.flat();
-    }
-  }, [restaurants, cardType]);
 
-  // Handle reaching the end
-  const handleReachEnd = () => {
-    if (hasNextPage && !isFetchingNextPage) {
-      fetchNextPage().catch(err => console.error("Failed to fetch next page:", err));
-    }
-  };
+console.log("menuItems:--",menuItems)
 
-  // Force update when new pages arrive
-  useEffect(() => {
-    if (swiperRef.current?.swiper) {
-      // Short delay to ensure DOM has updated
-      setTimeout(() => {
-        swiperRef.current.swiper.update();
-      }, 100);
-    }
-  }, [processedItems.length]);
-
-  // When no items are available
-  if (!processedItems || processedItems.length === 0) {
-    return <div className="text-gray-500">No items to display</div>;
+// Flatten paginated data synchronously
+const processedItems = useMemo(() => {
+  // Handle based on which data we're using
+  if (cardType === "category" && menuItems.length > 0) {
+    // Process menu items
+    return menuItems.flatMap(page => (Array.isArray(page) ? page : []));
+  } else if (cardType === "restaurant" && restaurants.length > 0) {
+    // Process restaurants
+    return restaurants.flatMap(page => (Array.isArray(page) ? page : []));
   }
+  
+  // Default empty array if no matching data
+  return [];
+}, [menuItems, restaurants, cardType]);
+
+// Handle reaching the end
+const handleReachEnd = () => {
+  if (hasNextPage && !isFetchingNextPage) {
+    fetchNextPage().catch(err => console.error("Failed to fetch next page:", err));
+  }
+};
+
+// Force update when new pages arrive
+useEffect(() => {
+  if (swiperRef.current?.swiper) {
+    // Short delay to ensure DOM has updated
+    setTimeout(() => {
+      swiperRef.current.swiper.update();
+    }, 100);
+  }
+}, [processedItems.length]);
+
+// When no items are available
+if (processedItems.length === 0) {
+  return <div className="text-gray-500">No items to display</div>;
+}
 
   return (
     <div className="slider-container relative">

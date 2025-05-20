@@ -42,7 +42,7 @@ export default function CartBadge() {
 
   return (
     <div
-      className={`fixed bottom-4 right-4 z-50 transform transition-all duration-500 ease-in-out w-full sm:w-96 max-w-full sm:max-w-lg`}
+      className={`fixed bottom-4 right-auto left-auto sm:right-4 z-50 transform transition-all duration-500 ease-in-out w-full sm:w-4/5 max-w-full sm:max-w-lg`}
       style={{
         maxWidth: "500px",
         boxShadow: "0 4px 16px rgba(0, 0, 0, 0.2)",
