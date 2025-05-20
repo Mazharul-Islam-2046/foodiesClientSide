@@ -11,6 +11,8 @@ import AuthProvider from "./providers/AuthProvider/AuthProvider";
 import { CartProvider } from "./providers/CartProvider/CartProvider.jsx";
 import Register from "./Pages/Auth_Pages/Register/Register.jsx";
 import SignIn from "./Pages/Auth_Pages/SignIn/SignIn.jsx"
+import { User } from "lucide-react";
+import UserProfile from "./Pages/UserProfile/UserProfile.jsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -52,6 +54,10 @@ const router = createBrowserRouter([
       {
         path: "/signin",
         element: <SignIn/>
+      },
+      {
+        path: "/user",
+        element: <UserProfile/>
       }
     ],
   },
