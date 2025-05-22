@@ -12,7 +12,8 @@ import { CartProvider } from "./providers/CartProvider/CartProvider.jsx";
 import Register from "./Pages/Auth_Pages/Register/Register.jsx";
 import SignIn from "./Pages/Auth_Pages/SignIn/SignIn.jsx"
 import { User } from "lucide-react";
-import UserProfile from "./Pages/UserProfile/UserProfile.jsx";
+import UserProfile from "./Pages/UserPages/UserProfile/UserProfile.jsx";
+import ViewAllOrders from "./Pages/UserPages/ViewAllOrders/ViewAllOrders.jsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -58,6 +59,10 @@ const router = createBrowserRouter([
       {
         path: "/user",
         element: <UserProfile/>
+      },
+      {
+        path: "/viewallorders",
+        element: <ViewAllOrders/>
       }
     ],
   },
