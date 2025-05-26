@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null); // Initialize navigate
 
-  console.log(user);
+  console.log("user:- ", user);
 
   // Firebase Authentication Methods
   const userRegister = async (data) => {
@@ -115,6 +115,9 @@ export const AuthProvider = ({ children }) => {
         isGoogleSignIn: true,
       });
       console.log(response);
+
+      // Set user state
+      setUser(response.data.data.user);
 
       // Optionally store tokens and update user state if needed
       // const { accessToken, refreshToken, user: serverUser } = response.data.data;

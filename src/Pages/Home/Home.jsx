@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import AllRestaurants from "../AllRestaurants/Restaurants";
 import Biriyani from "./Sections/Biriyani/Biriyani";
 import ExploreMenu from "./Sections/ExploreDiverseMenu/ExploreMenu";
@@ -7,11 +8,22 @@ import IndianCuisine from "./Sections/IndianCuisine/IndianCuisine";
 import MostPopularFood from "./Sections/MostPopularFood/MostPopularFood";
 import QuickBites from "./Sections/QuickBites/QuickBites";
 import SpiceUp from "./Sections/SpiceUp/SpiceUp";
+import { AuthContext } from "../../providers/AuthProvider/AuthContext";
 
 const Home = () => {
+
+  const { user } = useContext(AuthContext);
+
+
   return (
     <>
-      {/* <Hero />
+    {
+      user ? <AllRestaurants/> 
+      
+      :
+
+      <div>
+      <Hero />
       <div className="py-12">
         <MostPopularFood />
         <SpiceUp />
@@ -20,8 +32,11 @@ const Home = () => {
         <Biriyani />
         <IndianCuisine />
         <ExploreMenu />
-      </div> */}
-      <AllRestaurants/>
+      </div>
+      </div>
+    }
+      
+      {/* <AllRestaurants/> */}
     </>
   );
 };

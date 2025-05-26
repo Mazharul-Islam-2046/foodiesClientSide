@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import { User, MapPin, ChevronDown, Loader } from "lucide-react";
 import Cart from "../Components/Cart";
 import { AuthContext } from "../../providers/AuthProvider/AuthContext";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 export default function Navbar() {
 
@@ -116,7 +116,7 @@ export default function Navbar() {
           ) : (
             <button className="flex items-center gap-2 bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-orange-600 transition">
               <User size={18} />
-              <span>Sign Up</span>
+              <Link to="/signin">Sign In</Link>
             </button>
           )}
         </div>
