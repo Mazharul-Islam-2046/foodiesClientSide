@@ -15,6 +15,7 @@ import { User } from "lucide-react";
 import UserProfile from "./Pages/UserPages/UserProfile/UserProfile.jsx";
 import ViewAllOrders from "./Pages/UserPages/ViewAllOrders/ViewAllOrders.jsx";
 import PrivateRoutes from "./PrivateRoutes/PrivateRoutes.jsx"
+import { ToastContainer } from "react-toastify";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -73,6 +74,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <CartProvider>
+          <ToastContainer/>
         <RouterProvider router={router} />
         </CartProvider>
       </AuthProvider>

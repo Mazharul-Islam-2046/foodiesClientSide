@@ -3,10 +3,24 @@ import { Trash2, Plus, Minus, ShoppingBag, X, ChevronUp } from "lucide-react";
 import { useCart } from "../../providers/CartProvider/CartProvider";
 import { orderApi } from "../../api/orderApi";
 import { AuthContext } from "../../providers/AuthProvider/AuthContext";
+import { toast } from "react-toastify";
 
 export default function CartBadge() {
   const [height, setHeight] = useState("auto");
   const contentRef = useRef(null);
+
+
+  // success toast
+  const successToast = (message) => toast(`✅ ${message}`, {
+    position: "bottom-right",
+    autoClose: 5000,
+    hideProgressBar: true,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "dark",
+});
 
   // getting cart functions and datas from useCart
   const {
@@ -70,6 +84,7 @@ export default function CartBadge() {
 
     if (response.status === 201) {
       clearCart();
+      successToast("Order Placed Successfully");
     }
     console.log("Order Placement Response:- ",response);
   };
