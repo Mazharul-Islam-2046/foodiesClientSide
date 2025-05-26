@@ -14,7 +14,7 @@ import SignIn from "./Pages/Auth_Pages/SignIn/SignIn.jsx"
 import { User } from "lucide-react";
 import UserProfile from "./Pages/UserPages/UserProfile/UserProfile.jsx";
 import ViewAllOrders from "./Pages/UserPages/ViewAllOrders/ViewAllOrders.jsx";
-
+import PrivateRoutes from "./PrivateRoutes/PrivateRoutes.jsx"
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -43,7 +43,7 @@ const router = createBrowserRouter([
       {
         path: "/restaurant/:id",
         // path: "/restaurant",
-        element: <Restaurant/>,
+        element: <PrivateRoutes><Restaurant/></PrivateRoutes>,
         loader: async ({ params }) => {
           return fetch(`http://localhost:5000/api/v1/restaurant/getRestaurant/${params.id}`);
         },

@@ -1,6 +1,8 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import { Trash2, Plus, Minus, ShoppingBag, X, ChevronUp } from "lucide-react";
 import { useCart } from "../../providers/CartProvider/CartProvider";
+import { orderApi } from "../../api/orderApi";
+import { AuthContext } from "../../providers/AuthProvider/AuthContext";
 
 export default function CartBadge() {
   const [height, setHeight] = useState("auto");
@@ -14,12 +16,14 @@ export default function CartBadge() {
     deliveryFee,
     tax,
     total,
-    // clearCart,
+    clearCart,
     removeItem,
     updateQuantity,
     isExpanded,
-    setIsExpanded
+    setIsExpanded,
   } = useCart();
+
+  const { user, location } = useContext(AuthContext);
 
   // Calculate and update content height when content changes or expansion state changes
   useEffect(() => {
@@ -38,7 +42,37 @@ export default function CartBadge() {
     setIsExpanded(!isExpanded);
   };
 
-  //
+  
+
+  //Handle Checkout
+  const handleCheckout = async() => {
+    (e) => e.stopPropagation();
+    setIsExpanded(false);
+
+    console.log("cartItems:- ", cartItems)
+    // Get Items
+    const items = cartItems?.map((cartItem) => {
+      const item = {
+        menuItem: cartItem._id,
+        quantity: cartItem.quantity,
+        price: cartItem.price,
+      };
+
+      return item;
+    });
+
+    // Handle Order Placement
+    const response = await orderApi.createOrder({
+      items,
+      userId: user._id,
+      deliveryAddress: location
+    });
+
+    if (response.status === 201) {
+      clearCart();
+    }
+    console.log("Order Placement Response:- ",response);
+  };
 
   return (
     <div
@@ -175,8 +209,8 @@ export default function CartBadge() {
             </div>
 
             <button
-              onClick={(e) => e.stopPropagation()}
               className="bg-orange-500 hover:bg-orange-600 text-white py-3 px-4 rounded-lg w-full mt-4 font-medium transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-95"
+              onClick={handleCheckout}
             >
               Proceed to Checkout
             </button>

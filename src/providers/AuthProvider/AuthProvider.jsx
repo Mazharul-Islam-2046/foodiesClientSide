@@ -20,6 +20,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null); // Initialize navigate
+  const [location, setLocation] = useState("");
 
   console.log("user:- ", user);
 
@@ -114,10 +115,19 @@ export const AuthProvider = ({ children }) => {
         phone,
         isGoogleSignIn: true,
       });
-      console.log(response);
+
+      // Store tokens
+      const {
+        accessToken,
+        refreshToken,
+        user: serverUser,
+      } = response.data.data;
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
+      console.log("Google User:- ", response.data.data.user);
 
       // Set user state
-      setUser(response.data.data.user);
+      setUser(serverUser);
 
       // Optionally store tokens and update user state if needed
       // const { accessToken, refreshToken, user: serverUser } = response.data.data;
@@ -171,12 +181,10 @@ export const AuthProvider = ({ children }) => {
         } else {
           try {
             // Verify user with backend
-            console.log(firebaseUser);
             const response = await api.get(
               `/users/getUserByEmail/${firebaseUser.email}`
             );
             setUser(response.data.data);
-            console.log(response);
           } catch (err) {
             console.error(err);
             // Token invalid or user not found
@@ -213,12 +221,14 @@ export const AuthProvider = ({ children }) => {
     user,
     loading,
     error,
+    location,
     userRegister,
     userLogin,
     googleSignIn,
     logout,
     updateProfile,
     setError,
+    setLocation
   };
 
   return (

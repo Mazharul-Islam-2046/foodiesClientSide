@@ -6,9 +6,9 @@ import { Link, NavLink } from "react-router-dom";
 
 export default function Navbar() {
 
-  const {user} = useContext(AuthContext)
+  const {user, location, setLocation} = useContext(AuthContext)
   // const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [location, setLocation] = useState("");
+  
   const [isLoading, setIsLoading] = useState(true);
 
   // For demo purposes - toggle this to see different states
