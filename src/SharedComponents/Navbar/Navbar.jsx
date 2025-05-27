@@ -1,4 +1,4 @@
-import { Loader, MapPin, User } from 'lucide-react';
+import { Loader, MapPin } from 'lucide-react';
 import { useContext, useEffect, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { AuthContext } from '../../providers/AuthProvider/AuthContext';
@@ -78,12 +78,12 @@ export default function Navbar() {
       <div className="flex items-center justify-between relative container w-11/12 mx-auto px-4 sm:px-6 lg:px-8 h-full">
         {/* Logo on the left */}
         <NavLink to="/" className="flex-1">
-          <h1 className="text-2xl font-bold text-orange-500 logoFont">foodies</h1>
+          <img src="/foodieslogo.png" alt="Foodies Logo" className="w-32 h-auto" />
         </NavLink>
 
         {/* Location in the middle */}
         <div className="flex-1 flex justify-center">
-          <button className="flex items-center text-gray-700 hover:text-orange-500 transition">
+          <button className="flex items-center text-gray-700 hover:text-orange-500 transition text-[13px] font-semibold">
             <MapPin size={18} className="mr-1" />
             {isLoading ? (
               <div className="flex items-center">
@@ -115,8 +115,8 @@ export default function Navbar() {
               <span className="text-gray-700">{user.name}</span>
             </div>
           ) : (
-            <button className="flex items-center gap-2 bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-orange-600 transition">
-              <User size={18} />
+            <button className="flex items-center gap-2 bg-primary text-white py-2 px-5 text-sm rounded-md hover:bg-orange-600 transition">
+              {/* <User size={18} /> */}
               <Link to="/signin">Sign In</Link>
             </button>
           )}
