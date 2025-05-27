@@ -1,14 +1,13 @@
-import { useState, useEffect, useContext } from "react";
-import { User, MapPin, ChevronDown, Loader } from "lucide-react";
-import Cart from "../Components/Cart";
-import { AuthContext } from "../../providers/AuthProvider/AuthContext";
-import { Link, NavLink } from "react-router-dom";
+import { Loader, MapPin, User } from 'lucide-react';
+import { useContext, useEffect, useState } from 'react';
+import { Link, NavLink } from 'react-router-dom';
+import { AuthContext } from '../../providers/AuthProvider/AuthContext';
+import Cart from '../Components/Cart';
 
 export default function Navbar() {
-
-  const {user, location, setLocation} = useContext(AuthContext)
+  const { user, location, setLocation } = useContext(AuthContext);
   // const [isLoggedIn, setIsLoggedIn] = useState(false);
-  
+
   const [isLoading, setIsLoading] = useState(true);
 
   // For demo purposes - toggle this to see different states
@@ -28,41 +27,45 @@ export default function Navbar() {
               // Using reverse geocoding to get a readable address
               const { latitude, longitude } = position.coords;
               const response = await fetch(
-                `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1`
+                `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1`,
               );
 
               if (response.ok) {
                 const data = await response.json();
-                const city = data.address.city || data.address.town || data.address.village || data.address.suburb;
-                const state = data.address.state || "";
+                const city =
+                  data.address.city ||
+                  data.address.town ||
+                  data.address.village ||
+                  data.address.suburb;
+                const state = data.address.state || '';
                 const formattedLocation = state ? `${city}, ${state}` : city;
-                setLocation(formattedLocation || "Location not found");
+                setLocation(formattedLocation || 'Location not found');
               } else {
-                setLocation("San Francisco, CA"); // Fallback
+                setLocation('San Francisco, CA'); // Fallback
               }
             } catch (error) {
-              console.error("Error fetching location:", error);
-              setLocation("San Francisco, CA"); // Fallback
+              console.error('Error fetching location:', error);
+              setLocation('San Francisco, CA'); // Fallback
             } finally {
               setIsLoading(false);
             }
           },
           (error) => {
-            console.error("Geolocation error:", error);
-            alert("please allow location access to get your current location");
+            console.error('Geolocation error:', error);
+            alert('please allow location access to get your current location');
             if (error.code === 1) {
               // User denied access to location
-              setLocation("Please allow location access to get your current location");
+              setLocation('Please allow location access to get your current location');
             } else {
-              setLocation("Location not found");
+              setLocation('Location not found');
             }
             setIsLoading(false);
           },
-          { timeout: 50000 }
+          { timeout: 50000 },
         );
       } else {
         // Geolocation not supported
-        setLocation("Allow location access"); // Fallback
+        setLocation('Allow location access'); // Fallback
         setIsLoading(false);
       }
     };
@@ -71,13 +74,11 @@ export default function Navbar() {
   }, []);
 
   return (
-    <header className="bg-white shadow-md py-4 px-6">
-      <div className="flex items-center justify-between relative max-w-[1520px] w-11/12 mx-auto px-4 sm:px-6 lg:px-8 h-full">
+    <header className="bg-white shadow-md py-4 ">
+      <div className="flex items-center justify-between relative container w-11/12 mx-auto px-4 sm:px-6 lg:px-8 h-full">
         {/* Logo on the left */}
         <NavLink to="/" className="flex-1">
-          <h1 className="text-2xl font-bold text-orange-500 logoFont">
-            foodies
-          </h1>
+          <h1 className="text-2xl font-bold text-orange-500 logoFont">foodies</h1>
         </NavLink>
 
         {/* Location in the middle */}
