@@ -1,13 +1,10 @@
 import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import {AuthContext} from "../../../providers/AuthProvider/AuthContext.js"
-import { useNavigate } from "react-router";
 
-const Register = () => {
-
+const Register = ({ isOpen, onClose, onSwitchToSignIn }) => {
   const { userRegister } = useContext(AuthContext);
 
-  // Set validation mode to onBlur to trigger validation on focus out
   const {
     register,
     handleSubmit,
@@ -15,23 +12,32 @@ const Register = () => {
     reset
   } = useForm({ mode: "onBlur" });
 
-
-  const navigate = useNavigate();
-
   const onSubmit = async (data) => {
     try {
-      const user = await userRegister(data);
-      navigate("/signin");
-      console.log(user);
+      await userRegister(data);
       reset();
+      onClose();
+      onSwitchToSignIn(); // Switch to sign in after successful registration
     } catch (error) {
       console.error("Error submitting form:", error.message);
     }
   };
 
+  if (!isOpen) return null;
+
   return (
-    <div className="flex items-center justify-center min-h-screen bg-[#F7F9Fb] p-4">
-      <div className="w-full max-w-xl">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="w-full max-w-xl relative">
+        {/* Close button */}
+        <button
+          onClick={onClose}
+          className="absolute -top-4 -right-4 bg-white rounded-full p-2 shadow-lg hover:bg-gray-100"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+
         <div className="bg-[#F8F9FA] rounded-xl border border-[#E9E9E9] shadow-lg">
           <div className="px-8 pt-10 pb-8 md:px-14 md:pt-14 md:pb-12">
             <div className="space-y-2 mb-12">
@@ -171,13 +177,16 @@ const Register = () => {
           </div>
           <div className="px-8 py-6 border-t border-gray-200 text-center rounded-b-xl bg-gray-50">
             <p className="text-sm text-gray-600">
-              By creating an account, you agree to our Terms of Service and Privacy Policy
-            </p>
-            <p className="text-sm text-gray-600 mt-2">
               Already have an account?{" "}
-              <a href="/signin" className="text-[#1ABC9C] hover:underline">
+              <button 
+                onClick={() => {
+                  onClose();
+                  onSwitchToSignIn();
+                }} 
+                className="text-[#1ABC9C] hover:underline"
+              >
                 Sign in
-              </a>
+              </button>
             </p>
           </div>
         </div>

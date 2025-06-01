@@ -1,6 +1,7 @@
 import { Loader, MapPin } from 'lucide-react';
 import { useContext, useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import Register from '../../Pages/Auth_Pages/Register/Register';
 import SignIn from '../../Pages/Auth_Pages/SignIn/SignIn';
 import { AuthContext } from '../../providers/AuthProvider/AuthContext';
 
@@ -10,6 +11,7 @@ export default function Navbar() {
 
   const [isLoading, setIsLoading] = useState(true);
   const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
+  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
 
   // For demo purposes - toggle this to see different states
   // const user = isLoggedIn
@@ -126,7 +128,18 @@ export default function Navbar() {
       </header>
 
       {/* Sign In Modal */}
-      <SignIn isOpen={isSignInModalOpen} onClose={() => setIsSignInModalOpen(false)} />
+      <SignIn
+        isOpen={isSignInModalOpen}
+        onClose={() => setIsSignInModalOpen(false)}
+        onSwitchToRegister={() => setIsRegisterModalOpen(true)}
+      />
+
+      {/* Register Modal */}
+      <Register
+        isOpen={isRegisterModalOpen}
+        onClose={() => setIsRegisterModalOpen(false)}
+        onSwitchToSignIn={() => setIsSignInModalOpen(true)}
+      />
     </>
   );
 }

@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import {AuthContext} from "../../../providers/AuthProvider/AuthContext.js"
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
-const SignIn = ({ isOpen, onClose }) => {
+const SignIn = ({ isOpen, onClose, onSwitchToRegister }) => {
   const location = useLocation();
   const navigate = useNavigate()
 
@@ -152,9 +152,15 @@ const SignIn = ({ isOpen, onClose }) => {
           <div className="px-8 py-6 border-t border-gray-200 text-center rounded-b-xl bg-gray-50">
             <p className="text-sm text-gray-600">
               {`Don't have an account?`}{" "}
-              <Link to={"/register"} className="text-[#1ABC9C] hover:underline">
+              <button 
+                onClick={() => {
+                  onClose();
+                  onSwitchToRegister();
+                }} 
+                className="text-[#1ABC9C] hover:underline"
+              >
                 Register here
-              </Link>
+              </button>
             </p>
           </div>
         </div>
