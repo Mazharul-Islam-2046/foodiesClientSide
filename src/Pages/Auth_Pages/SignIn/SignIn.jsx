@@ -3,11 +3,9 @@ import { useForm } from "react-hook-form";
 import {AuthContext} from "../../../providers/AuthProvider/AuthContext.js"
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
-const SignIn = () => {
-
+const SignIn = ({ isOpen, onClose }) => {
   const location = useLocation();
   const navigate = useNavigate()
-
 
   const { userLogin, googleSignIn } = useContext(AuthContext);
   
@@ -19,13 +17,11 @@ const SignIn = () => {
   } = useForm({ mode: "onBlur" });
 
   const onSubmit = async (data) => {
-    console.log(data);
     try {
-      const user = await userLogin(data);
-      console.log(user);
+      await userLogin(data); // Remove unused 'user' variable
       reset();
+      onClose();
       navigate(location?.state ? location.state : '/')
-      
     } catch (error) {
       console.error("Error signing in:", error.message);
     }
@@ -33,17 +29,29 @@ const SignIn = () => {
 
   const handleGoogleSignIn = async () => {
     try {
-      const user = await googleSignIn();
-      console.log(user);
+      await googleSignIn(); // Remove unused 'user' variable
+      onClose();
       navigate(location?.state ? location.state : '/')
     } catch (error) {
       console.error("Error with Google sign in:", error.message);
     }
   };
 
+  if (!isOpen) return null;
+
   return (
-    <div className="flex items-center justify-center min-h-screen bg-[#F7F9Fb] p-4">
-      <div className="w-full max-w-xl">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="w-full max-w-xl relative">
+        {/* Close button */}
+        <button
+          onClick={onClose}
+          className="absolute -top-4 -right-4 bg-white rounded-full p-2 shadow-lg hover:bg-gray-100"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+        
         <div className="bg-[#F8F9FA] rounded-xl border border-[#E9E9E9] shadow-lg">
           <div className="px-8 pt-10 pb-8 md:px-14 md:pt-14 md:pb-12">
             <div className="space-y-2 mb-12">

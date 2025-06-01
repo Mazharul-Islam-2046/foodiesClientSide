@@ -59,7 +59,7 @@ const ExploreMenu = () => {
 
   return (
     <div className="relative container  mx-auto px-4 sm:px-6 lg:px-8 h-full pt-10 pb-10">
-      <h2 className="text-3xl font-bold mb-10">Explore Menu</h2>
+      <h2 className="text-3xl font-bold mb-6">Explore Menu</h2>
 
       {/* Show skeleton while initially loading */}
       {isLoading && !hasData && renderLoadingSkeleton()}
