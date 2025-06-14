@@ -1,22 +1,22 @@
 'use client';
 
 import { Clock, Heart, MapPin, Truck } from 'lucide-react';
-import { memo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { memo, useContext, useState } from 'react';
+// import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../providers/AuthProvider/AuthContext';
 
 const RestaurantCard = memo(({ item }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [favorite, setFavorite] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
-  const navigate = useNavigate();
+
+
+  const {setIsSignInModalOpen } = useContext(AuthContext)
 
   if (!item) return null;
 
   const handleCardClick = () => {
-    // Navigate to restaurant page
-    if (item?._id) {
-      navigate(`/restaurant/${item._id}`);
-    }
+    setIsSignInModalOpen(true)
   };
 
   const handleFavoriteClick = (e) => {

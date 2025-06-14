@@ -21,6 +21,8 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null); // Initialize navigate
   const [location, setLocation] = useState("");
+  
+  const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
 
   console.log("user:- ", user);
 
@@ -228,7 +230,9 @@ export const AuthProvider = ({ children }) => {
     logout,
     updateProfile,
     setError,
-    setLocation
+    setLocation,
+    isSignInModalOpen,
+    setIsSignInModalOpen,
   };
 
   return (

@@ -6,11 +6,10 @@ import SignIn from '../../Pages/Auth_Pages/SignIn/SignIn';
 import { AuthContext } from '../../providers/AuthProvider/AuthContext';
 
 export default function Navbar() {
-  const { user, location, setLocation } = useContext(AuthContext);
+  const { user, location, setLocation, isSignInModalOpen, setIsSignInModalOpen } = useContext(AuthContext);
   // const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [isLoading, setIsLoading] = useState(true);
-  const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
 
   // For demo purposes - toggle this to see different states

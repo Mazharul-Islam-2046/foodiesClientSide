@@ -19,20 +19,22 @@ const Home = () => {
       {user ? (
         <AllRestaurants />
       ) : (
-        <div>
-          <Hero />
-          <CuisineCarousel />
+        <AllRestaurants />
 
-          <div className="">
-            <MostPopularFood />
-            <SpiceUp />
-            <QuickBites />
-            <FastFood />
-            <Biriyani />
-            <IndianCuisine />
-            <ExploreMenu />
-          </div>
-        </div>
+        // <div>
+        //   <Hero />
+        //   <CuisineCarousel />
+
+        //   <div className="">
+        //     <MostPopularFood />
+        //     <SpiceUp />
+        //     <QuickBites />
+        //     <FastFood />
+        //     <Biriyani />
+        //     <IndianCuisine />
+        //     <ExploreMenu />
+        //   </div>
+        // </div>
       )}
 
       {/* <AllRestaurants/> */}
